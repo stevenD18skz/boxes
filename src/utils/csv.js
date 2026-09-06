@@ -41,6 +41,15 @@ export function parseCSV(text) {
   return rows;
 }
 
+// Prepara un valor para escribirlo como campo de CSV. Solo entrecomilla cuando
+// hace falta, y adentro dobla las comillas: es lo que espera parseCSV (y Excel).
+// No sirve JSON.stringify, que escapa a la manera de JSON (\") y deja el campo
+// ilegible al releerlo.
+export function csvField(value) {
+  const text = value === null || value === undefined ? "" : String(value);
+  return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
 // Dispara la descarga de un archivo de texto. El objeto URL se libera enseguida
 // porque, si no, el blob se queda en memoria hasta que se recargue la página.
 export function downloadTextFile(filename, content, type = "text/csv;charset=utf-8;") {

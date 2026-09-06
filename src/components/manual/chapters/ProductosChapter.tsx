@@ -104,7 +104,10 @@ export default function ProductosChapter({ numero }: { numero: number }) {
         <p className="mt-3 text-sm leading-relaxed text-slate-600">
           Las columnas <span className="font-mono">category</span> y{" "}
           <span className="font-mono">brand</span> se escriben con el nombre. Las
-          que no existan todavía se crean solas al importar.
+          que no existan todavía se crean solas al importar. La columna{" "}
+          <span className="font-mono">photo</span> es opcional y lleva la
+          dirección de la imagen (la misma que trae el CSV exportado), no el
+          archivo: así se puede pasar el catálogo con sus fotos a otra cuenta.
         </p>
       </Topic>
 

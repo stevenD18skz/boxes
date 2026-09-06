@@ -3,6 +3,8 @@
 // y devuelve un número, un texto o un error; nada toca la pantalla ni el
 // servicio.
 
+import { csvField } from "@/utils/csv";
+
 export const LOW_STOCK_THRESHOLD = 10;
 
 // Un producto puede no tener categoría ni marca: en la base eso es un null, y
@@ -25,6 +27,7 @@ export const CSV_TEMPLATE_HEADERS = [
   "price",
   "stock",
   "description",
+  "photo",
 ];
 
 /* --- margen --- */
@@ -145,30 +148,37 @@ export const CSV_TEMPLATE_ROWS = [
     2500,
     100,
     "Arroz blanco de grano largo",
+    "",
   ].join(","),
 ];
 
 /* --- exportación --- */
 
 export const buildProductsCSV = (products) => {
+  // "photo" es la URL pública de la foto, no la imagen: el bucket es público,
+  // así que la misma URL sigue sirviendo en otra tienda y el CSV alcanza para
+  // llevarse el catálogo con fotos y todo.
   const rows = [
-    "id,name,sku,barcode,category,brand,cost_price,price,stock,description,created_at",
+    "id,name,sku,barcode,category,brand,cost_price,price,stock,description,photo,created_at",
   ];
   products.forEach((p) =>
     rows.push(
       [
         p.id,
-        JSON.stringify(p.name),
+        p.name,
         p.sku,
-        p.barcode || "",
-        p.category || "",
-        p.brand || "",
+        p.barcode,
+        p.category,
+        p.brand,
         p.cost_price,
         p.price,
         p.stock,
-        JSON.stringify(p.description || ""),
+        p.description,
+        p.photo,
         p.created_at,
-      ].join(","),
+      ]
+        .map(csvField)
+        .join(","),
     ),
   );
   return rows;

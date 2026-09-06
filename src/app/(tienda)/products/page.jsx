@@ -645,6 +645,9 @@ export default function ProductsPage() {
             price: Number(obj.price),
             stock: Number(obj.stock),
             description: obj.description || "",
+            // Llega como URL, no como archivo: no hay nada que subir. Es lo que
+            // permite migrar el catálogo a otra cuenta sin perder las fotos.
+            photo: obj.photo || "",
           });
         }
       });
