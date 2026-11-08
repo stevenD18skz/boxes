@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
     const dueno = f.string("dueno", { required: true, max: 120 });
     const email = f.string("email", { required: true, max: 200 })?.toLowerCase();
     const password = f.string("password", { required: true, max: 200 });
-    if (password && password.length < 4) {
-      f.add("password", "Debe tener al menos 4 caracteres");
+    if (password && password.length < 8) {
+      f.add("password", "Debe tener al menos 8 caracteres");
     }
     if (email && !EMAIL_RE.test(email)) {
       f.add("email", "No es un correo válido");

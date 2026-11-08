@@ -42,7 +42,19 @@
 -- =============================================================================
 
 create extension if not exists pgcrypto;   -- gen_random_uuid()
-create extension if not exists pg_trgm;    -- búsqueda por nombre con ILIKE
+-- pg_trgm vive en el esquema `extensions` y no en `public`: lo que esté en
+-- public queda expuesto por la API de Supabase. Las bases creadas antes lo
+-- tenían en public; el bloque de abajo lo mueve (el índice que lo usa sigue
+-- funcionando igual).
+create extension if not exists pg_trgm with schema extensions;  -- búsqueda por nombre con ILIKE
+do $$ begin
+  if exists (
+    select 1 from pg_extension
+    where extname = 'pg_trgm' and extnamespace = 'public'::regnamespace
+  ) then
+    alter extension pg_trgm set schema extensions;
+  end if;
+end $$;
 
 -- ----------------------------------------------------------------- TIPOS ----
 -- create type no acepta "if not exists", de ahí los bloques con excepción.
@@ -113,6 +125,19 @@ create trigger tiendas_set_updated_at
   before update on public.tiendas
   for each row execute function public.set_updated_at();
 
+-- Intentos de login fallidos, para frenar a quien prueba contraseñas a ciegas
+-- (ver src/lib/auth/loginThrottle.ts). Una fila por intento fallido; al entrar
+-- bien se borran las del correo. Las de más de un día se limpian solas desde
+-- la misma ruta, así que la tabla nunca crece.
+create table if not exists public.login_attempts (
+  id           bigint generated always as identity primary key,
+  email        text not null,
+  ip           text not null,
+  attempted_at timestamptz not null default now()
+);
+create index if not exists login_attempts_email_idx on public.login_attempts (email, attempted_at);
+create index if not exists login_attempts_ip_idx    on public.login_attempts (ip, attempted_at);
+
 -- ========================================================== CATEGORÍAS ======
 -- Van antes que products: la tabla las referencia por llave foránea.
 create table if not exists public.categories (
@@ -180,7 +205,7 @@ create table if not exists public.products (
 create index if not exists products_tienda_id_idx   on public.products (tienda_id);
 create index if not exists products_category_id_idx on public.products (category_id);
 create index if not exists products_brand_id_idx    on public.products (brand_id);
-create index if not exists products_name_trgm_idx   on public.products using gin (name gin_trgm_ops);
+create index if not exists products_name_trgm_idx   on public.products using gin (name extensions.gin_trgm_ops);
 create index if not exists products_barcode_idx     on public.products (barcode) where barcode <> '';
 
 -- Se compara sin mayúsculas ni espacios de sobra: quien escribe "arz-001" un
@@ -1048,6 +1073,27 @@ select jsonb_build_object(
 );
 $$;
 
+-- ========================================================= search_path ======
+-- Cada función de public corre con search_path fijo. Sin esto, quien pueda
+-- crear objetos en otro esquema del search_path podría tapar una tabla con
+-- la suya y la función la usaría sin saberlo. Se aplica a todas las funciones
+-- de public que no sean de una extensión, también a las que se agreguen.
+do $$
+declare f record;
+begin
+  for f in
+    select p.oid::regprocedure as sig
+    from pg_proc p
+    where p.pronamespace = 'public'::regnamespace
+      and not exists (
+        select 1 from pg_depend d
+        where d.objid = p.oid and d.deptype = 'e'
+      )
+  loop
+    execute format('alter function %s set search_path = public', f.sig);
+  end loop;
+end $$;
+
 -- ================================================================= RLS ======
 -- Activo y SIN políticas en todas: nadie con la anon key (o sea, nadie desde
 -- el navegador) puede leer ni escribir. Todo pasa por /api, que se conecta
@@ -1056,6 +1102,7 @@ $$;
 -- Si en algún momento se quiere consultar Supabase directo desde el
 -- navegador mientras se desarrolla, correr supabase/sql/05_policies_dev.sql.
 -- Leer antes las advertencias de ese archivo.
+alter table public.login_attempts enable row level security;
 alter table public.tiendas       enable row level security;
 alter table public.products      enable row level security;
 alter table public.categories    enable row level security;
@@ -1066,6 +1113,20 @@ alter table public.orders        enable row level security;
 alter table public.order_items   enable row level security;
 alter table public.expenses      enable row level security;
 alter table public.daily_closes  enable row level security;
+alter table public.suppliers     enable row level security;
+
+-- Además de RLS, anon y authenticated no tienen ningún permiso sobre public:
+-- ni siquiera aparecen las tablas en la API GraphQL de Supabase. Segunda
+-- capa por si alguna vez una tabla nueva queda sin RLS. Los "default
+-- privileges" hacen lo mismo con lo que se cree después.
+-- (05_policies_dev.sql devuelve los permisos si se necesitan para desarrollar.)
+revoke all on all tables    in schema public from anon, authenticated;
+revoke all on all sequences in schema public from anon, authenticated;
+revoke all on all functions in schema public from public, anon, authenticated;
+alter default privileges in schema public revoke all on tables    from anon, authenticated;
+alter default privileges in schema public revoke all on sequences from anon, authenticated;
+alter default privileges in schema public revoke all on functions from public, anon, authenticated;
+grant execute on all functions in schema public to service_role;
 
 -- =============================================================== STORAGE ====
 -- Bucket público para las fotos que la propia tienda sube o toma con la

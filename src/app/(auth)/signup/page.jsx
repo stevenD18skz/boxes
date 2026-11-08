@@ -119,10 +119,10 @@ export default function SignupPage() {
         <PasswordField
           id="password"
           label="Contraseña"
-          hint="Mínimo 4 caracteres."
+          hint="Mínimo 8 caracteres."
           autoComplete="new-password"
           required
-          minLength={4}
+          minLength={8}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
@@ -134,7 +134,7 @@ export default function SignupPage() {
             label="Confirmar contraseña"
             autoComplete="new-password"
             required
-            minLength={4}
+            minLength={8}
             invalid={mismatch}
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}

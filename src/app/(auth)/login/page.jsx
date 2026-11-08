@@ -81,10 +81,9 @@ function LoginForm() {
         const code = body?.error?.code;
         const message = body?.error?.message || "No se pudo iniciar sesión";
         const details = body?.error?.details;
-        if (code === "email_not_found") {
-          setEmailError(message);
-          emailRef.current?.focus();
-        } else if (code === "invalid_password") {
+        if (code === "invalid_credentials") {
+          // El servidor no dice cuál de los dos falló (a propósito), así que
+          // el aviso va en la contraseña, que es lo que se suele corregir.
           setPasswordError(message);
           passwordRef.current?.focus();
         } else if (code === "invalid_payload" && details) {

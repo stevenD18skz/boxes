@@ -26,9 +26,11 @@ Todo sale con la misma forma:
 | Código HTTP | Cuándo |
 |---|---|
 | `400` | la URL o los parámetros están mal armados |
+| `401` | sin sesión (`unauthenticated`), o correo/contraseña incorrectos en el login (`invalid_credentials`, el mismo para los dos casos a propósito) |
 | `404` | no existe ese registro |
 | `409` | choca con algo que ya existe (SKU repetido, cierre del mismo día) |
 | `422` | el cuerpo tiene campos inválidos. Vienen todos juntos en `details` |
+| `429` | demasiados intentos de login fallidos (`too_many_attempts`): 5 por correo o 20 por IP en 15 minutos |
 | `503` | falta configurar Supabase o falta correr el SQL |
 
 Los errores de formulario llegan campo por campo:

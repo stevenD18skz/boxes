@@ -26,13 +26,16 @@
 -- con SUPABASE_SERVICE_ROLE_KEY en su sitio.
 -- =============================================================================
 
+-- 01_schema.sql le quita a anon y authenticated todos los permisos sobre
+-- public, así que además de la política hay que devolverles el permiso.
 do $$
 declare t text;
 begin
   foreach t in array array[
     'products', 'categories', 'brands', 'sales', 'sale_items', 'orders',
-    'order_items', 'expenses', 'daily_closes'
+    'order_items', 'expenses', 'daily_closes', 'suppliers'
   ] loop
+    execute format('grant select, insert, update, delete on public.%I to anon, authenticated', t);
     execute format('drop policy if exists dev_all_access on public.%I', t);
     execute format(
       'create policy dev_all_access on public.%I for all to anon, authenticated using (true) with check (true)',
@@ -50,8 +53,9 @@ end $$;
 -- begin
 --   foreach t in array array[
 --     'products', 'categories', 'brands', 'sales', 'sale_items', 'orders',
---     'order_items', 'expenses', 'daily_closes', 'tiendas'
+--     'order_items', 'expenses', 'daily_closes', 'suppliers', 'tiendas'
 --   ] loop
+--     execute format('revoke all on public.%I from anon, authenticated', t);
 --     execute format('drop policy if exists dev_all_access on public.%I', t);
 --     execute format('alter table public.%I enable row level security', t);
 --   end loop;
