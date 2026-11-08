@@ -31,13 +31,15 @@ function bytesToBase64url(bytes: Uint8Array): string {
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-function base64urlToBytes(value: string): Uint8Array {
+// Tipado como Uint8Array<ArrayBuffer> (no ArrayBufferLike) porque es lo que
+// pide crypto.subtle.verify desde TypeScript 5.7.
+function base64urlToBytes(value: string): Uint8Array<ArrayBuffer> {
   const padded = value
     .replace(/-/g, "+")
     .replace(/_/g, "/")
     .padEnd(value.length + ((4 - (value.length % 4)) % 4), "=");
   const binary = atob(padded);
-  const bytes = new Uint8Array(binary.length);
+  const bytes = new Uint8Array(new ArrayBuffer(binary.length));
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
   return bytes;
 }
