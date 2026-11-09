@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, ChevronDown, Loader2, Pencil, Plus, X } from "lucide-react";
+import { normalizeText } from "@/lib/text";
 
 // Select con creación, del estilo del de Notion: se abre, se elige de la lista
 // o se escribe. Mientras se escribe algo que todavía no existe, arriba de la
@@ -18,7 +19,7 @@ import { Check, ChevronDown, Loader2, Pencil, Plus, X } from "lucide-react";
 //   { id: null,   name: "Maizena" }  se va a crear al guardar
 //   null                             sin nada
 
-const norm = (text) => String(text ?? "").trim().toLowerCase();
+const norm = normalizeText;
 
 export default function CreatableSelect({
   id,
@@ -234,7 +235,7 @@ export default function CreatableSelect({
           }}
           onMouseDown={() => !open && openList()}
           onKeyDown={onKeyDown}
-          className="w-full bg-transparent px-2 py-2.5 text-[15px] outline-none placeholder:text-slate-400"
+          className="w-full bg-transparent px-2 py-2.5 text-[15px] outline-none placeholder:text-slate-500"
         />
 
         {isNew && !open && (
@@ -247,7 +248,7 @@ export default function CreatableSelect({
               // que es lo que abre el tooltip donde no hay mouse que pasar por
               // encima (celular, tablet).
               onClick={(event) => event.preventDefault()}
-              className="inline-flex cursor-help items-center rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide text-amber-700"
+              className="inline-flex cursor-help items-center rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-700"
             >
               Nuevo
             </button>
@@ -266,7 +267,7 @@ export default function CreatableSelect({
             type="button"
             onClick={clear}
             aria-label="Quitar"
-            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -276,7 +277,7 @@ export default function CreatableSelect({
           tabIndex={-1}
           onClick={() => (open ? close() : openList())}
           aria-label={open ? "Cerrar lista" : "Abrir lista"}
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-slate-400 hover:text-slate-600"
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-slate-500 hover:text-slate-600"
         >
           <ChevronDown
             className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
@@ -362,7 +363,7 @@ export default function CreatableSelect({
                         onClick={() => setRenaming(null)}
                         disabled={renaming.saving}
                         aria-label="Cancelar"
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50"
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-slate-500 hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -401,7 +402,7 @@ export default function CreatableSelect({
                         {option.name}
                       </span>
                       {option.product_count > 0 && (
-                        <span className="ml-auto shrink-0 pl-2 text-xs text-slate-400">
+                        <span className="ml-auto shrink-0 pl-2 text-xs text-slate-500">
                           {option.product_count}
                         </span>
                       )}

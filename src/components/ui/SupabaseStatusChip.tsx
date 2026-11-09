@@ -38,7 +38,7 @@ export default function SupabaseStatusChip() {
       className={`flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
         isConnected
           ? "border-[#3ECF8E]/30 bg-[#3ECF8E]/10 text-[#3ECF8E]"
-          : "border-slate-200 bg-slate-50 text-slate-400"
+          : "border-slate-200 bg-slate-50 text-slate-500"
       }`}
     >
       <SupabaseLogo

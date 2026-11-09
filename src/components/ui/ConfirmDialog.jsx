@@ -2,7 +2,10 @@
 
 import { AlertTriangle } from "lucide-react";
 
-// Diálogo de "¿seguro?" para acciones que no se pueden deshacer.
+import Dialog from "./Dialog";
+
+// "¿Seguro?" para acciones que no se pueden deshacer. El foco arranca en
+// Cancelar: un Enter por reflejo no borra nada.
 export default function ConfirmDialog({
   title = "Confirmar",
   description = "¿Estás seguro?",
@@ -12,38 +15,33 @@ export default function ConfirmDialog({
   onConfirm,
 }) {
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 px-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm animate-fade-slide-up rounded-lg bg-white p-5 shadow-lg"
-      >
-        <div className="flex items-start gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
-            <AlertTriangle className="h-5 w-5" aria-hidden />
-          </span>
-          <div>
-            <h4 className="font-semibold text-slate-800">{title}</h4>
-            <p className="mt-1 text-sm text-slate-600">{description}</p>
-          </div>
-        </div>
-        <div className="mt-4 flex items-center justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
-          >
-            {cancelLabel}
-          </button>
-          <button
-            onClick={onConfirm}
-            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-700"
-          >
-            {confirmLabel}
-          </button>
+    <Dialog title={title} hideTitle onClose={onClose} className="max-w-sm p-5">
+      <div className="flex items-start gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-700">
+          <AlertTriangle className="h-5 w-5" aria-hidden />
+        </span>
+        <div>
+          <p className="text-lg font-bold text-slate-900">{title}</p>
+          <p className="mt-1 text-base text-slate-700">{description}</p>
         </div>
       </div>
-    </div>
+      <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <button
+          type="button"
+          data-autofocus
+          onClick={onClose}
+          className="h-11 rounded-lg border border-slate-300 px-4 text-base font-bold text-slate-800 transition-colors hover:bg-slate-50"
+        >
+          {cancelLabel}
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          className="h-11 rounded-lg bg-red-700 px-4 text-base font-bold text-white transition-colors hover:bg-red-800"
+        >
+          {confirmLabel}
+        </button>
+      </div>
+    </Dialog>
   );
 }

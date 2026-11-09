@@ -2,11 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Barra de desplazamiento delgada y con el gris de la marca en vez de la
-   nativa del navegador, en toda la página (Chrome/Edge + Firefox). */
+/* Los colores salen de la paleta de tailwind.config.js, nunca en hex suelto. */
+
+/* Barra de desplazamiento delgada y tibia en vez de la nativa del navegador,
+   en toda la página (Chrome/Edge + Firefox). */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #5b7fac transparent;
+  scrollbar-color: theme("colors.slate.300") transparent;
 }
 *::-webkit-scrollbar {
   width: 13px;
@@ -16,13 +18,47 @@
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background-color: #5b7fac;
+  background-color: theme("colors.slate.300");
   border-radius: 9999px;
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   background-clip: padding-box;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #3f6690;
+  background-color: theme("colors.slate.400");
+}
+
+/* Lo que el navegador dibuja solo también lleva la marca: la selección de
+   texto, el cursor de escritura y el anillo de foco al navegar con teclado. */
+::selection {
+  background-color: theme("colors.brand.100");
+  color: theme("colors.brand.900");
+}
+input,
+textarea {
+  caret-color: theme("colors.brand.600");
+}
+:focus-visible {
+  outline: 2px solid theme("colors.brand.600");
+  outline-offset: 2px;
+}
+
+/* Quien pidió menos movimiento en su sistema (mareo, migraña) no ve
+   animaciones de entrada ni transiciones largas: todo aparece de una. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Las cifras de plata siempre alineadas en columna. */
+.tabular-nums,
+table {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Oculta las flechas nativas de <input type="number"> cuando el campo ya
@@ -45,7 +81,7 @@
    El color del papel se pasa con --receipt-paper para que la franja combine
    con el fondo de la card. */
 .receipt-edge {
-  --receipt-paper: #fff;
+  --receipt-paper: theme("colors.white");
   height: 6px;
   background-repeat: repeat-x;
   background-size: 12px 12px;

@@ -28,11 +28,11 @@ export default function SortHeader({
       }
     >
       <span
-        className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide ${align === "right" ? "flex-row-reverse" : ""}`}
+        className={`inline-flex items-center gap-1 text-xs font-bold ${align === "right" ? "flex-row-reverse" : ""}`}
       >
         {label}
         <Icon
-          className={`h-3.5 w-3.5 ${active ? "text-blue-600" : "text-slate-400"}`}
+          className={`h-3.5 w-3.5 ${active ? "text-blue-600" : "text-slate-500"}`}
         />
       </span>
     </th>

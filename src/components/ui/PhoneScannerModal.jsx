@@ -137,7 +137,7 @@ export default function PhoneScannerModal({
               </p>
 
               {url && (
-                <p className="w-full break-all rounded-lg bg-slate-50 px-3 py-2 text-center font-mono text-[11px] leading-relaxed text-slate-400">
+                <p className="w-full break-all rounded-lg bg-slate-50 px-3 py-2 text-center font-mono text-[11px] leading-relaxed text-slate-500">
                   {url}
                 </p>
               )}

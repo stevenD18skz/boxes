@@ -56,7 +56,7 @@ export default function ToastStack({ toasts, onDismiss, accent = "teal" }) {
             <button
               onClick={() => onDismiss(t.id)}
               aria-label="Cerrar notificación"
-              className="shrink-0 text-slate-400 hover:text-white"
+              className="shrink-0 text-slate-500 hover:text-white"
             >
               <X className="h-4 w-4" />
             </button>
