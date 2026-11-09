@@ -15,7 +15,7 @@ export default function ProblemasChapter({ numero }: { numero: number }) {
         rows={[
           [
             '"Ya existe un cierre para esa fecha"',
-            "Ese día ya se cerró antes. Revisa el historial de Cierre del día para verlo, en vez de crear uno nuevo.",
+            "Ese día ya se cerró. En Ventas → Cerrar el día lo ves y lo puedes corregir.",
           ],
           [
             '"Agrega al menos un producto"',

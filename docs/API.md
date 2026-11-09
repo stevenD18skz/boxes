@@ -402,9 +402,15 @@ Filtros: `from`, `to`, `source` (`excel` o `app`).
   "expenses_total": 25000,
   "purchases_total": 380000,
   "cash_in": null,
-  "cash_out": null
+  "cash_out": null,
+  "cash_counted": 412000
 }
 ```
+
+`cash_counted` es la plata que se contó en el cajón al cerrar (null = no se
+contó). La pantalla de cierre la compara con lo esperado (ventas en efectivo +
+abonos de fiado en efectivo + entradas − gastos − salidas) para decir si la
+caja cuadra.
 
 Solo `sales_total` es obligatorio. Si no se manda `gain`, se calcula como el
 19% de la venta, que es lo que hace la columna GANANCIA del Excel; si se manda,
@@ -420,6 +426,52 @@ lo mismo que cero. Un segundo cierre para la misma fecha da `409`.
 ```
 GET /api/daily-closes/2025-12-31
 ```
+
+---
+
+## Fiados
+
+El cuaderno de fiados. Lo que debe un cliente es la suma de sus ventas con
+`payment_method = "fiado"` sin anular, menos sus abonos. El cliente se
+identifica por el nombre, comparado sin mayúsculas, tildes ni espacios de más
+(`src/lib/fiados.ts`). Los abonos nunca tocan el inventario.
+
+### `GET /api/fiados`
+
+Cada cliente con su saldo y sus movimientos, primero quien más debe.
+`meta.total_owed` es lo que te deben en total.
+
+```jsonc
+{
+  "data": [
+    {
+      "client_name": "Doña Rosa",
+      "balance": 15000,
+      "fiado_total": 20000,
+      "paid_total": 5000,
+      "last_activity": "2026-11-08T18:10:00Z",
+      "entries": [
+        { "type": "abono", "id": "…", "date": "2026-11-08T18:10:00Z", "amount": 5000, "payment_method": "efectivo" },
+        { "type": "venta", "id": "…", "date": "2026-11-08T15:30:00Z", "amount": 20000 }
+      ]
+    }
+  ],
+  "meta": { "total_owed": 15000 }
+}
+```
+
+### `POST /api/fiados/payments`
+
+```json
+{ "client_name": "Doña Rosa", "amount": 5000, "payment_method": "efectivo" }
+```
+
+Anota un abono, completo o parcial. `payment_method`: `efectivo` (por defecto),
+`transferencia` o `tarjeta`.
+
+### `DELETE /api/fiados/payments/:id`
+
+Borra un abono anotado por error (es el "Deshacer" de la pantalla).
 
 ---
 

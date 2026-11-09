@@ -22,9 +22,10 @@ export default function ManualFaq() {
 
       <div className="mt-4 space-y-2">
         <Faq q="¿Qué pasa si cierro la pestaña o se va la luz a mitad de una venta?">
-          La venta no queda registrada y el stock no se descuenta: es como si no
-          hubiera pasado. Solo se guarda cuando se hace clic en{" "}
-          <span className="font-medium">Registrar venta</span>.
+          Si solo cambias de pantalla o recargas, la venta te espera tal como
+          la dejaste. Si cierras la pestaña, se pierde y no se descuenta nada
+          del inventario. Solo queda guardada al tocar{" "}
+          <span className="font-medium">Cobrar</span>.
         </Faq>
 
         <Faq q="¿Los datos de la simulación pueden dañar la tienda real?">
@@ -51,20 +52,21 @@ export default function ManualFaq() {
         </Faq>
 
         <Faq q="¿Por qué algunas tablas de Reportes dicen 'Esperando datos'?">
-          Porque necesitan ventas registradas producto por producto o con método
-          de pago, y el histórico importado del Excel solo traía el total del
-          día. Se van a ir llenando a medida que se use el punto de venta.
+          Porque en ese período no hay ventas registradas en la app. El
+          histórico importado del Excel solo traía el total del día, sin qué se
+          vendió ni cómo te pagaron. Desde la primera venta en la app se llenan.
         </Faq>
 
         <Faq q="¿Cómo sé cuánto me deben los clientes que compraron fiado?">
-          En <span className="font-medium">Reportes → Fiado por cobrar</span>,
-          dentro del período que se esté mirando.
+          En <span className="font-medium">Fiados</span>, en el menú. Está
+          cada cliente con lo que te debe; tocando su nombre anotas lo que te
+          pagó, completo o por partes.
         </Faq>
 
         <Faq q="Intenté cerrar el mismo día dos veces y no me dejó, ¿por qué?">
           Solo puede existir un cierre por fecha. El aviso "Ya existe un cierre
           para esa fecha" significa que ese día ya quedó registrado; se revisa en
-          el historial de Cierre del día en vez de crear otro.
+          Ventas → Cerrar el día, donde puedes corregirlo.
         </Faq>
 
         <Faq q="¿Recibir un pedido y crearlo hacen lo mismo con el inventario?">

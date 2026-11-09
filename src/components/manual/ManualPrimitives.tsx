@@ -63,7 +63,7 @@ export function FieldTable({
   return (
     <div className="mt-4 overflow-x-auto rounded-lg border border-slate-200">
       <table className="w-full min-w-[420px] text-left text-sm">
-        <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-slate-50 text-sm text-slate-600">
           <tr>
             <th className="px-4 py-2 font-medium">Campo</th>
             <th className="px-4 py-2 font-medium">¿Obligatorio?</th>
@@ -100,7 +100,7 @@ export function SimpleTable({ head, rows }: { head: string[]; rows: string[][] }
   return (
     <div className="mt-4 overflow-x-auto rounded-lg border border-slate-200">
       <table className="w-full min-w-[520px] text-left text-sm">
-        <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-slate-50 text-sm text-slate-600">
           <tr>
             {head.map((h) => (
               <th key={h} className="px-4 py-2 font-medium">
@@ -175,7 +175,7 @@ export function Section({
         </span>
         <div className="min-w-0 flex-1">
           <h2 id={`${id}-h`} className="text-lg font-semibold text-slate-900">
-            <span className="tabular-nums text-slate-400">
+            <span className="tabular-nums text-slate-500">
               {String(numero).padStart(2, "0")}.
             </span>{" "}
             {titulo}
@@ -207,7 +207,7 @@ export function Faq({ q, children }: { q: string; children: ReactNode }) {
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-slate-800 marker:content-none">
         {q}
         <span
-          className="shrink-0 text-slate-400 transition-transform group-open:rotate-45"
+          className="shrink-0 text-slate-500 transition-transform group-open:rotate-45"
           aria-hidden
         >
           +

@@ -20,16 +20,15 @@ export default function DiaADiaChapter({ numero }: { numero: number }) {
           <>
             <span className="font-medium">Durante el día:</span> registrar cada
             venta en{" "}
-            <span className="font-medium">Ventas → Venta por venta</span> y
+            <span className="font-medium">Ventas → Vender</span> y
             anotar los gastos o movimientos de caja en{" "}
             <span className="font-medium">Gastos y caja</span> a medida que
             ocurren.
           </>,
           <>
-            <span className="font-medium">Al cerrar:</span> si se registró venta
-            por venta durante el día, no hace falta nada más; si no se alcanzó,
-            dejar el total en{" "}
-            <span className="font-medium">Ventas → Cierre del día</span>.
+            <span className="font-medium">Al cerrar:</span> en{" "}
+            <span className="font-medium">Ventas → Cerrar el día</span>, contar
+            la plata del cajón. La app dice si cuadra.
           </>,
           <>
             <span className="font-medium">Una vez por semana:</span> revisar los

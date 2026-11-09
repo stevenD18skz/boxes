@@ -104,23 +104,51 @@ Lee `docs/API.md` antes de tocar una ruta. Resumen:
   `daily_closes.expenses_total`. Al sumar, usa una fuente o la otra (ver el
   comentario en `src/app/api/expenses/route.ts`).
 
-## UI
+## UI y UX
 
-- La mayor parte del uso es en el mostrador: pantallas densas, tablas en
-  escritorio y tarjetas en móvil (`*Table.jsx` + `*CardList.jsx`), con
-  `BottomNav` en móvil y `SideBar` en escritorio (`components/layout`).
-- Cada pantalla que carga datos tiene skeleton, estado vacío y estado lleno.
-  Mantén ese patrón y añade el estado de error si falta.
-- Para confirmar usa `ConfirmDialog` y para avisos `ToastStack`/`useToasts`
-  (`components/ui`). `sweetalert2` está instalado, pero no se usa en `src`.
+Quien usa Boxes es un tendero de barrio con conocimiento básico de
+tecnología, que atiende clientes mientras usa la app y lo interrumpen a cada
+rato. Lo primero es que sea obvio y rápido; lo bonito va después.
+
+- **Lenguaje de la tienda, no de software:** "Te deben", "Vendiste",
+  "Quedan pocos", "Código interno", "Le ganas". Nada de SKU, stock, KPI ni
+  textos en inglés. Los errores dicen qué pasó y qué hacer.
+- **Paleta (tailwind.config.js):** neutros tibios (`slate` apunta a `stone`) y
+  un solo acento, `brand` (verde petróleo). `blue`, `teal`, `indigo`,
+  `violet` y `sky` también apuntan a `brand` para que lo viejo quede parejo;
+  lo nuevo usa `brand` y `slate` directo. Verde esmeralda = plata que entró,
+  ámbar = aviso, rojo = peligro. Texto como mínimo `slate-500` (contraste AA).
+- **Fuente:** Atkinson Hyperlegible (`app/layout.jsx`), hecha para baja visión.
+- **Tamaños:** texto de cuerpo 16px (`text-base`), etiquetas como mínimo 14px,
+  nada en mayúsculas diminutas. Todo lo que se toca mide 44px o más.
+- **Una acción principal por pantalla** (botón `brand-600` grande) y lo demás
+  secundario o agrupado (Ley de Hick).
+- **No bloquear la venta:** se vende aunque el inventario diga 0 (solo se
+  avisa); el carrito sobrevive a cambiar de pantalla (`sessionStorage`);
+  cancelar se puede deshacer.
+- **Montos siempre con `MoneyInput`** ("5.000", "$5.000" y "5000" valen lo
+  mismo). Nunca `<input type="number">` para plata.
+- **Búsquedas sin tildes:** `matchesText` / `normalizeText` de `src/lib/text.ts`.
+- **Diálogos con `components/ui/Dialog.jsx`** (role, Escape, foco). Para
+  confirmar, `ConfirmDialog`; para avisos, `ToastStack`/`useToasts` (aceptan
+  una acción, p. ej. "Deshacer").
+- Cada pantalla que carga datos tiene estado de carga, vacío (que diga qué
+  hacer), error (con "Intentar otra vez") y lleno.
+- Escritorio: tablas (`*Table.jsx`) y `SideBar`; celular: tarjetas
+  (`*CardList.jsx`) y `BottomNav` con lo del día a día (Inicio, Ventas,
+  Fiados, Productos).
 - Lector de código de barras: con pistola USB (`useBarcodeScanner`), con la
   cámara (`useCameraScanner`) o con el celular vinculado por QR y Realtime
-  (`usePhoneScanner`, `lib/phoneScanner.ts`).
-- Deuda de UI detectada (auditoría con un linter, nov 2026): `transition-all`
-  en botones y tarjetas, encabezados de tabla en mayúsculas de 10–11px, colores
-  hex sueltos en `src/index.css` y "eyebrows" sobre los títulos de la landing.
-  Lo nuevo no debe repetirlos: usa `transition-colors`/`transition-transform` y
-  etiquetas en sentence case.
+  (`usePhoneScanner`, `lib/phoneScanner.ts`). Compara solo dígitos y sin ceros
+  a la izquierda.
+- **Fiados** (`/fiados`, `src/lib/fiados.ts`): saldo por cliente = ventas
+  fiadas sin anular − abonos (`fiado_payments`). Los abonos pueden ser
+  parciales y no tocan el inventario.
+- **Cierre del día** (`components/sales/DailyCloseMode.jsx` +
+  `dayCloseUtils.js`): se calcula con las ventas, abonos y gastos del día; solo
+  se pide contar el cajón.
+- Para revisar diseño: skills `impeccable` (critique/audit) e `intent`; el
+  detector es `impeccable detect src/app src/components`.
 
 ## Entorno
 

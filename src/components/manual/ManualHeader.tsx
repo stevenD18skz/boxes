@@ -56,21 +56,21 @@ export function ManualIndex() {
         {CAPITULOS.map((c, i) => (
           <li key={c.id}>
             <a href={`#${c.id}`} className={INDEX_LINK_CLASS}>
-              <span className="tabular-nums text-slate-400">
+              <span className="tabular-nums text-slate-500">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <c.icon className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+              <c.icon className="h-4 w-4 shrink-0 text-slate-500" aria-hidden />
               {c.titulo}
             </a>
           </li>
         ))}
         <li>
           <a href="#faq" className={INDEX_LINK_CLASS}>
-            <span className="tabular-nums text-slate-400">
+            <span className="tabular-nums text-slate-500">
               {CAPITULOS.length + 1}
             </span>
             <HelpCircle
-              className="h-4 w-4 shrink-0 text-slate-400"
+              className="h-4 w-4 shrink-0 text-slate-500"
               aria-hidden
             />
             Preguntas frecuentes

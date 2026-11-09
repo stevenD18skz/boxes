@@ -33,9 +33,9 @@ export default function ReportesChapter({ numero }: { numero: number }) {
             de ese día o semana.
           </li>
           <li>
-            <span className="font-medium">Fiado por cobrar:</span> lista las
-            ventas registradas como fiado que siguen pendientes, con el nombre
-            del cliente y el total.
+            <span className="font-medium">Te deben en fiados:</span> el total
+            y los clientes que más deben. El detalle y los pagos están en
+            Fiados.
           </li>
         </ul>
       </Topic>

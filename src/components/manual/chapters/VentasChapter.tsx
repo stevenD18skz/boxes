@@ -1,7 +1,6 @@
 import { ShoppingCart } from "lucide-react";
 import {
   Callout,
-  FieldTable,
   Section,
   SimpleTable,
   Steps,
@@ -17,20 +16,19 @@ export default function VentasChapter({ numero }: { numero: number }) {
       titulo="Ventas"
       proposito="Registrar lo que se vende, venta por venta o el total del día."
     >
-      <Callout tone="info" title="Dos formas de registrar, un mismo lugar">
-        Arriba del todo hay un selector para cambiar entre{" "}
-        <span className="font-medium">Venta por venta</span> y{" "}
-        <span className="font-medium">Cierre del día</span>. La primera es el
-        punto de venta normal; la segunda sirve para los días en que no se
-        alcanzó a registrar cada venta y solo se quiere dejar el total, como se
-        hacía en el Excel.
+      <Callout tone="info" title="Todo lo de vender, en un mismo lugar">
+        Arriba hay tres opciones: <span className="font-medium">Vender</span>{" "}
+        (cobrar a cada cliente), <span className="font-medium">Cerrar el día</span>{" "}
+        (contar la plata del cajón al final) y{" "}
+        <span className="font-medium">Ventas anteriores</span> (buscar o anular
+        una venta ya hecha).
       </Callout>
 
       <Topic titulo="Armar una venta">
         <Steps
           items={[
-            "Buscar el producto por nombre, SKU o código de barras y elegirlo de las sugerencias (con las flechas y Enter, o con el mouse). Un producto sin stock aparece deshabilitado y no se puede agregar.",
-            "Ajustar la cantidad de cada línea con los +/− o escribiéndola directamente; no puede superar el stock disponible.",
+            "Escribir el producto (no importan las tildes: «cafe» encuentra «Café») o pasar el código de barras, y elegirlo de las sugerencias. Si el inventario dice que no hay, igual se puede vender: la app solo avisa para que lo revises después.",
+            "Ajustar la cantidad de cada línea con los +/− o escribiéndola directamente.",
             <>
               Si hace falta, poner un descuento por línea con el botón de
               descuento: por porcentaje o por un monto fijo (el monto nunca puede
@@ -38,9 +36,10 @@ export default function VentasChapter({ numero }: { numero: number }) {
             </>,
             "Elegir la forma de pago y completar lo que pida.",
             <>
-              Botón <span className="font-medium">Registrar venta</span>. Se
-              descuenta el stock vendido y se abre un recibo que se puede
-              imprimir.
+              Botón <span className="font-medium">Cobrar</span>. Se descuenta
+              del inventario y aparece, en grande, el vuelto que hay que
+              entregar. Si te interrumpen a mitad de una venta y te vas a otra
+              pantalla, la venta te espera tal como la dejaste.
             </>,
           ]}
         />
@@ -52,8 +51,8 @@ export default function VentasChapter({ numero }: { numero: number }) {
           rows={[
             [
               "Efectivo",
-              "Monto recibido",
-              'Calcula el vuelto. Hay botones de montos rápidos (+$5.000, +$10.000, +$20.000, +$50.000) y "Monto exacto". Si el monto no alcanza, se marca en rojo cuánto falta por cobrar.',
+              "Con cuánto te pagó (si pagó exacto, nada)",
+              'Te propone los billetes con que te pueden pagar según el total, por ejemplo $15.000 o $20.000, y muestra en grande cuánto devolver. Si no alcanza, dice cuánto falta.',
             ],
             [
               "Tarjeta",
@@ -67,55 +66,37 @@ export default function VentasChapter({ numero }: { numero: number }) {
             ],
             [
               "Fiado",
-              "Nombre del cliente",
-              'Queda pendiente de cobro a nombre de esa persona. Aparece después en Reportes → "Fiado por cobrar".',
+              "A quién le fías",
+              'Queda anotado en Fiados a nombre de esa persona. Si ya te debía, te dice cuánto y cómo queda.',
             ],
           ]}
         />
       </Topic>
 
       <Topic titulo="Anular una venta">
-        <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Desde el historial de ventas, con el botón de anular sobre la venta ya
-          registrada. Pide confirmación porque no se puede deshacer: la venta
-          queda marcada como anulada (tachada, con la etiqueta correspondiente) y
-          el stock vendido se devuelve al inventario. No se usa para corregir un
-          error menor de una venta que sigue en pie: para eso conviene anularla y
-          volver a registrarla bien.
+        <p className="mt-2 text-base leading-relaxed text-slate-700">
+          En <span className="font-medium">Ventas anteriores</span>, con el botón
+          de anular. La venta queda marcada como anulada en el historial, los
+          productos vuelven al inventario y, si fue fiada, sale de lo que te debe
+          ese cliente.
         </p>
       </Topic>
 
-      <Topic titulo="Cierre del día: cuándo usarlo en vez de venta por venta">
-        <p className="mt-2 text-sm leading-relaxed text-slate-600">
-          Cuando no se alcanzó a registrar cada venta y solo se quiere dejar el
-          total del día, igual que en el Excel.
-        </p>
-        <FieldTable
-          rows={[
-            { campo: "Fecha", obligatorio: true },
-            {
-              campo: "Venta del día",
-              obligatorio: true,
-              notas: "Debe ser mayor que cero.",
-            },
-            {
-              campo: "Ganancia",
-              obligatorio: false,
-              notas:
-                "Se calcula sola al 19% de la venta; se puede corregir a mano.",
-            },
-            { campo: "Gasto", obligatorio: false },
-            { campo: "Compra", obligatorio: false },
-            { campo: "Entrada de caja", obligatorio: false },
-            { campo: "Salida de caja", obligatorio: false },
+      <Topic titulo="Cerrar el día">
+        <Steps
+          items={[
+            "La app ya sabe lo que vendiste (por efectivo, transferencia, tarjeta y fiado), lo que te pagaron de fiados y los gastos que anotaste. Te lo muestra sumado.",
+            "Cuenta la plata del cajón y escríbela. Al instante te dice si la caja cuadra, si sobra o si falta, y cuánto.",
+            "Toca Cerrar el día. Verás el resumen: cuánto vendiste, si fue más o menos que el día anterior y cuánto te deben.",
           ]}
         />
-        <Callout tone="warning" title="Solo un cierre por fecha">
-          El sistema no deja crear dos cierres para el mismo día: si ya existe
-          uno, avisa{" "}
-          <span className="font-mono">Ya existe un cierre para esa fecha</span>.
-          El historial de la sección, con filtros por año y mes, sirve para
-          revisar el que ya quedó registrado.
+        <Callout tone="info" title="Si no anotas cada venta">
+          Si ese día no hay ventas registradas en la app, te pide escribir el
+          total que llevaste en tu cuaderno, como se hacía en el Excel.
+        </Callout>
+        <Callout tone="warning" title="Un solo cierre por día">
+          Si el día ya está cerrado, la app te lo muestra y te deja corregirlo,
+          en vez de crear otro.
         </Callout>
       </Topic>
     </Section>
