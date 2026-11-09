@@ -59,7 +59,7 @@ export default function TrendCard({
       </div>
       <div className="mt-2">
         {hint ? (
-          <span className="text-xs text-slate-400">{hint}</span>
+          <span className="text-xs text-slate-500">{hint}</span>
         ) : (
           pct !== undefined && <DeltaBadge pct={pct} />
         )}

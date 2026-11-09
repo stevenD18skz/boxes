@@ -9,6 +9,7 @@ import {
   ClipboardList,
   Wallet,
   BarChart3,
+  BookOpen,
   RotateCcw,
   LogOut,
 } from "lucide-react";
@@ -17,10 +18,13 @@ import { useSimulation } from "@/hooks/useSimulation";
 import { useSession } from "@/hooks/useSession";
 import { restartSimulation, stopSimulation } from "@/lib/simulation/store";
 
+// Ordenadas por lo que más se usa en el día: vender y cobrar fiados primero,
+// lo de vez en cuando (pedidos, gastos, reportes) después.
 const menuItems = [
   { path: "/dashboard", label: "Inicio", icon: Home },
-  { path: "/products", label: "Productos", icon: Box },
   { path: "/sales", label: "Ventas", icon: ShoppingCart },
+  { path: "/fiados", label: "Fiados", icon: BookOpen },
+  { path: "/products", label: "Productos", icon: Box },
   { path: "/orders", label: "Pedidos", icon: ClipboardList },
   { path: "/expenses", label: "Gastos y caja", icon: Wallet },
   { path: "/summary", label: "Reportes", icon: BarChart3 },
@@ -90,7 +94,7 @@ const SideBar = ({ isExpanded }) => {
               } ${isExpanded ? "" : "md:justify-center"}`}
             >
               <it.icon
-                className={`h-[18px] w-[18px] shrink-0 ${active ? "text-blue-600" : "text-slate-400"}`}
+                className={`h-[18px] w-[18px] shrink-0 ${active ? "text-blue-600" : "text-slate-500"}`}
               />
               <span
                 className={`truncate text-sm font-medium ${isExpanded ? "" : "md:hidden"}`}
@@ -132,7 +136,7 @@ const SideBar = ({ isExpanded }) => {
           } ${isExpanded ? "" : "md:justify-center"}`}
         >
           <LogOut
-            className={`h-[18px] w-[18px] shrink-0 ${isSimulating ? "text-amber-600" : "text-slate-400"}`}
+            className={`h-[18px] w-[18px] shrink-0 ${isSimulating ? "text-amber-600" : "text-slate-500"}`}
           />
           <span
             className={`truncate text-sm font-medium ${isExpanded ? "" : "md:hidden"}`}

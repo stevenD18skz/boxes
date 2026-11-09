@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Wallet,
   BarChart3,
+  BookOpen,
   RotateCcw,
   LogOut,
   MoreHorizontal,
@@ -21,18 +22,19 @@ import { useSession } from "@/hooks/useSession";
 import { restartSimulation, stopSimulation } from "@/lib/simulation/store";
 
 // Solo cuatro secciones caben cómodas junto al botón "Más" sin apretar los
-// objetivos táctiles (bottom-nav-limit: máximo 5 en total). Las que se usan a
-// diario -Inicio, Productos, Ventas, Pedidos- quedan directo en la barra; las
-// dos menos frecuentes y las acciones de sesión viven detrás de "Más", que
-// abre una hoja desde abajo en vez de competir por el mismo espacio.
+// objetivos táctiles (bottom-nav-limit: máximo 5 en total). En la barra van
+// las del día a día -Inicio, Ventas, Fiados, Productos-; pedidos, gastos,
+// reportes y las acciones de sesión viven detrás de "Más", que abre una hoja
+// desde abajo en vez de competir por el mismo espacio.
 const PRIMARY_ITEMS = [
   { path: "/dashboard", label: "Inicio", icon: Home },
-  { path: "/products", label: "Productos", icon: Box },
   { path: "/sales", label: "Ventas", icon: ShoppingCart },
-  { path: "/orders", label: "Pedidos", icon: ClipboardList },
+  { path: "/fiados", label: "Fiados", icon: BookOpen },
+  { path: "/products", label: "Productos", icon: Box },
 ];
 
 const MORE_ITEMS = [
+  { path: "/orders", label: "Pedidos", icon: ClipboardList },
   { path: "/expenses", label: "Gastos y caja", icon: Wallet },
   { path: "/summary", label: "Reportes", icon: BarChart3 },
 ];
@@ -118,7 +120,7 @@ const BottomNav = () => {
               type="button"
               onClick={() => setMoreOpen(false)}
               aria-label="Cerrar"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               <X className="h-5 w-5" />
             </button>
@@ -139,7 +141,7 @@ const BottomNav = () => {
                   }`}
                 >
                   <it.icon
-                    className={`h-5 w-5 shrink-0 ${active ? "text-blue-600" : "text-slate-400"}`}
+                    className={`h-5 w-5 shrink-0 ${active ? "text-blue-600" : "text-slate-500"}`}
                   />
                   <span className="text-sm font-medium">{it.label}</span>
                 </button>
@@ -181,7 +183,7 @@ const BottomNav = () => {
 
       <nav
         aria-label="Navegación principal"
-        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-1px_8px_rgba(15,23,42,0.06)] md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] shadow-nav-up md:hidden"
       >
         {PRIMARY_ITEMS.map((it) => {
           const active = isActive(it.path);
@@ -193,7 +195,7 @@ const BottomNav = () => {
               className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
             >
               <it.icon
-                className={`h-5 w-5 ${active ? "text-blue-600" : "text-slate-400"}`}
+                className={`h-5 w-5 ${active ? "text-blue-600" : "text-slate-500"}`}
               />
               <span
                 className={`text-[11px] font-medium ${active ? "text-blue-600" : "text-slate-500"}`}
@@ -212,7 +214,7 @@ const BottomNav = () => {
           className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
         >
           <MoreHorizontal
-            className={`h-5 w-5 ${moreActive || moreOpen ? "text-blue-600" : "text-slate-400"}`}
+            className={`h-5 w-5 ${moreActive || moreOpen ? "text-blue-600" : "text-slate-500"}`}
           />
           <span
             className={`text-[11px] font-medium ${moreActive || moreOpen ? "text-blue-600" : "text-slate-500"}`}

@@ -87,7 +87,7 @@ export default function DayMoneyDonut({
             </Link>
           </div>
           {lastRecorded && (
-            <p className="mt-5 text-xs text-slate-400">
+            <p className="mt-5 text-xs text-slate-500">
               Último día registrado: {longDate(lastRecorded.date)} ·{" "}
               <span className="font-semibold tabular-nums text-slate-500">
                 {currency(lastRecorded.sales_total)}
@@ -172,7 +172,7 @@ export default function DayMoneyDonut({
             </g>
           </svg>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
+            <span className="text-sm font-bold text-slate-600">
               Te quedó
             </span>
             <span
@@ -182,7 +182,7 @@ export default function DayMoneyDonut({
             >
               {currency(Math.max(0, day.neto))}
             </span>
-            <span className="text-xs font-semibold tabular-nums text-slate-400">
+            <span className="text-xs font-semibold tabular-nums text-slate-500">
               {Math.round((Math.max(0, day.neto) / day.ventas) * 100)}% de la
               venta
             </span>
@@ -208,7 +208,7 @@ export default function DayMoneyDonut({
                     <span className="text-sm font-bold tabular-nums text-slate-900">
                       {currency(p.value)}
                     </span>
-                    <span className="w-9 text-right text-xs font-semibold tabular-nums text-slate-400">
+                    <span className="w-9 text-right text-xs font-semibold tabular-nums text-slate-500">
                       {Math.round(pct)}%
                     </span>
                   </span>
@@ -220,7 +220,7 @@ export default function DayMoneyDonut({
                     style={{ width: `${Math.max(pct, 1.5)}%` }}
                   />
                 </div>
-                <p className="mt-1 text-xs text-slate-400">{p.hint}</p>
+                <p className="mt-1 text-xs text-slate-500">{p.hint}</p>
               </div>
             );
           })}
@@ -233,7 +233,7 @@ export default function DayMoneyDonut({
         </p>
       )}
 
-      <p className="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-400">
+      <p className="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500">
         Además compraste{" "}
         <span className="font-bold tabular-nums text-slate-600">
           {currency(day.compra)}

@@ -205,6 +205,9 @@ export function useDashboardData() {
         : ordered;
 
     return {
+      salesTodayCount: salesToday.length,
+      todayClosed: !!todayClose,
+      ventasAyer: yesterdayClose?.sales_total ?? null,
       hasToday: !!effectiveToday,
       ventasHoy: effectiveToday?.ventas ?? 0,
       ventasDelta: pctDelta(
@@ -238,7 +241,21 @@ export function useDashboardData() {
     [products, sales, orders],
   );
 
-  return { ...today, lowStockCount, topProductsHome, activity, loading };
+  const pendingOrdersCount = useMemo(
+    () => orders.filter((o) => o.status === "pendiente").length,
+    [orders],
+  );
+
+  return {
+    ...today,
+    lowStockCount,
+    topProductsHome,
+    activity,
+    loading,
+    productCount: products.length,
+    totalSalesCount: sales.length,
+    pendingOrdersCount,
+  };
 }
 
 export default useDashboardData;

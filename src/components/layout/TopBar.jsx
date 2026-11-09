@@ -69,11 +69,11 @@ const TopBar = ({ sidebarExpanded, onToggleSidebar }) => {
 
         <div className="mx-1 hidden h-6 w-px bg-slate-200 sm:block" />
 
-        <div className="flex flex-col">
-          <h1 className="text-xl font-semibold text-slate-800">
-            {tienda?.nombre ?? "..."}
-          </h1>
-        </div>
+        {/* El nombre de la tienda no es el título de la pantalla (cada página
+            trae su propio h1); se recorta para no empujar los botones. */}
+        <p className="min-w-0 truncate text-lg font-bold text-slate-900">
+          {tienda?.nombre ?? ""}
+        </p>
 
         <div className="flex-1" />
 
@@ -91,19 +91,19 @@ const TopBar = ({ sidebarExpanded, onToggleSidebar }) => {
               Buscar
             </label>
             <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-2 py-1.5 focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-200">
-              <Search className="h-4 w-4 text-slate-400" />
+              <Search className="h-4 w-4 text-slate-500" />
               <input
                 id="top-search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Buscar productos, SKU..."
-                className="w-full text-sm outline-none placeholder:text-slate-400"
+                placeholder="Buscar un producto"
+                className="w-full text-sm outline-none placeholder:text-slate-500"
               />
               {q && (
                 <button
                   type="button"
                   onClick={() => setQ("")}
-                  className="px-1 text-xs text-slate-400 hover:text-slate-600"
+                  className="px-1 text-xs text-slate-500 hover:text-slate-600"
                 >
                   Limpiar
                 </button>
@@ -127,12 +127,12 @@ const TopBar = ({ sidebarExpanded, onToggleSidebar }) => {
                 <div className="text-xs font-medium text-slate-700">
                   {tienda?.dueno ?? "..."}
                 </div>
-                <div className="text-[11px] text-slate-400">
+                <div className="text-[11px] text-slate-500">
                   {tienda?.nombre ?? ""}
                 </div>
               </div>
               <ChevronDown
-                className={`hidden h-3.5 w-3.5 text-slate-400 transition-transform sm:block ${userOpen ? "rotate-180" : ""}`}
+                className={`hidden h-3.5 w-3.5 text-slate-500 transition-transform sm:block ${userOpen ? "rotate-180" : ""}`}
               />
             </button>
 
@@ -148,7 +148,7 @@ const TopBar = ({ sidebarExpanded, onToggleSidebar }) => {
                   <div className="truncate text-xs text-slate-500">
                     {tienda?.nombre ?? ""}
                   </div>
-                  <div className="mt-1 truncate text-xs text-slate-400">
+                  <div className="mt-1 truncate text-xs text-slate-500">
                     {tienda?.email ?? ""}
                   </div>
                 </div>

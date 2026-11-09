@@ -38,7 +38,7 @@ export default function QuickAction({
       <span className="min-w-0 text-left">
         <span className="block text-sm font-semibold">{label}</span>
         <span
-          className={`block text-xs ${primary ? "text-blue-100" : "text-slate-400"}`}
+          className={`block text-xs ${primary ? "text-blue-100" : "text-slate-500"}`}
         >
           {hint}
         </span>

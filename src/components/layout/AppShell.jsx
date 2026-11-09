@@ -52,7 +52,7 @@ const AppShell = ({ children }) => {
             pb-20 reserva el alto de BottomNav (56px + su borde) más un poco
             de aire antes del pie; en escritorio no hace falta. */}
         <div
-          className={`flex min-h-lvh flex-1 flex-col pb-20 transition-all duration-300 md:pb-0 ${
+          className={`flex min-h-lvh flex-1 flex-col pb-20 transition-[padding] duration-300 md:pb-0 ${
             sidebarExpanded ? "md:pl-48" : "md:pl-16"
           }`}
         >

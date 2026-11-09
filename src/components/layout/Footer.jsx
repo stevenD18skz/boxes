@@ -48,7 +48,7 @@ const Footer = () => {
           {/* Ocupa dos columnas para que los seis enlaces quepan en dos filas
               en vez de estirar el pie hacia abajo. */}
           <nav className="lg:col-span-2" aria-label="Secciones">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <h2 className="text-sm font-bold text-slate-600">
               Secciones
             </h2>
             <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2.5">
@@ -66,7 +66,7 @@ const Footer = () => {
           </nav>
 
           <div>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <h2 className="text-sm font-bold text-slate-600">
               Soporte
             </h2>
             <ul className="mt-4 space-y-2.5 text-sm">
@@ -75,7 +75,7 @@ const Footer = () => {
                   href="mailto:soporte@boxes.local"
                   className="flex items-center gap-2 rounded text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
-                  <Mail className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                  <Mail className="h-4 w-4 shrink-0 text-slate-500" aria-hidden />
                   soporte@boxes.local
                 </a>
               </li>
@@ -85,7 +85,7 @@ const Footer = () => {
                   className="flex items-center gap-2 rounded text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   <Phone
-                    className="h-4 w-4 shrink-0 text-slate-400"
+                    className="h-4 w-4 shrink-0 text-slate-500"
                     aria-hidden
                   />
                   +57 1 234 567 89
@@ -97,21 +97,21 @@ const Footer = () => {
                   className="flex items-center gap-2 rounded text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   <BookOpen
-                    className="h-4 w-4 shrink-0 text-slate-400"
+                    className="h-4 w-4 shrink-0 text-slate-500"
                     aria-hidden
                   />
                   Manual de uso
                 </Link>
               </li>
               <li className="flex items-center gap-2 text-slate-500">
-                <Clock className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                <Clock className="h-4 w-4 shrink-0 text-slate-500" aria-hidden />
                 Lun a Vie, 9:00 - 18:00
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-2 border-t border-slate-200 pt-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-2 border-t border-slate-200 pt-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Boxes · Everything in one box</p>
           <p>Versión 1.0</p>
         </div>

@@ -27,7 +27,7 @@ export default function LowStockCard({ count }: { count: number }) {
       <div className="mt-2 text-2xl font-bold tabular-nums text-amber-600">
         {count}
       </div>
-      <div className="mt-2 text-xs text-slate-400">productos por revisar</div>
+      <div className="mt-2 text-xs text-slate-500">productos por revisar</div>
     </Link>
   );
 }

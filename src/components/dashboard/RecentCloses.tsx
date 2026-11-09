@@ -35,7 +35,7 @@ export default function RecentCloses({
           <p className="text-sm font-semibold text-slate-600">
             Todavía no has cerrado ningún día
           </p>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500">
             Al final de la jornada anota cuánto vendiste y queda registrado aquí.
           </p>
           <Link
@@ -49,7 +49,7 @@ export default function RecentCloses({
         <div className="-mx-1 mt-1 overflow-x-auto">
           <table className="w-full min-w-[460px] text-left text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wide text-slate-400">
+              <tr className="text-sm text-slate-600">
                 <th className="px-1 pb-2 font-medium">Día</th>
                 <th className="px-1 pb-2 text-right font-medium">Venta</th>
                 <th className="px-1 pb-2 text-right font-medium">Ganancia</th>
