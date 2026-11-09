@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import {
   isSimulationOn,
+  resumeSimulation,
   simulationStartedAt,
   subscribeToSimulation,
 } from "@/lib/simulation/store";
@@ -23,6 +24,9 @@ export function useSimulation() {
       setStartedAt(simulationStartedAt());
     };
     sync();
+    // Repone la cookie si otra pestaña u otro puerto la borró, para que la
+    // próxima navegación no termine en /login (ver resumeSimulation).
+    resumeSimulation();
     return subscribeToSimulation(sync);
   }, []);
 

@@ -28,7 +28,7 @@ function setSimCookie(on: boolean): void {
 
 // Si cambia la forma de los datos de ejemplo, subir esto: las simulaciones
 // viejas que sigan abiertas se vuelven a sembrar solas en vez de romperse.
-const VERSION = 1;
+const VERSION = 2;
 
 type StoredData = { version: number; startedAt: string; data: SimulationData };
 
@@ -106,6 +106,18 @@ export function startSimulation(): void {
   seed();
   setSimCookie(true);
   notify();
+}
+
+/**
+ * Retoma una simulación que ya estaba abierta en la pestaña. Vuelve a poner la
+ * cookie porque se puede haber borrado sin que la pestaña se entere: en
+ * localhost la cookie se comparte entre puertos (3000, 3100…) y el
+ * sessionStorage no, así que entrar o salir de la simulación en otro puerto la
+ * borra. Sin cookie, middleware.ts manda a /login aunque la simulación siga
+ * encendida aquí.
+ */
+export function resumeSimulation(): void {
+  if (isSimulationOn()) setSimCookie(true);
 }
 
 /** Vuelve a dejar los datos de ejemplo como estaban al principio. */

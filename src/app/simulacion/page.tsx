@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FlaskConical, AlertTriangle } from "lucide-react";
 
-import { isSimulationOn, startSimulation } from "@/lib/simulation/store";
+import { isSimulationOn, resumeSimulation, startSimulation } from "@/lib/simulation/store";
 import { useSession } from "@/hooks/useSession";
 
 export default function SimulacionPage() {
@@ -31,7 +31,8 @@ export default function SimulacionPage() {
       return;
     }
 
-    if (!isSimulationOn()) startSimulation();
+    if (isSimulationOn()) resumeSimulation();
+    else startSimulation();
 
     // Si el navegador tiene bloqueado el almacenamiento de la pestaña (modo
     // privado con restricciones, por ejemplo), no hay dónde guardar los datos
