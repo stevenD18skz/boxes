@@ -56,13 +56,13 @@ export default function LandingFooter() {
               />
               <span className="flex flex-col leading-tight">
                 <span className="text-sm font-bold text-white">Boxes</span>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-slate-500">
                   Everything in one box
                 </span>
               </span>
             </Link>
 
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">
               El sistema de administración para tu tienda de barrio: inventario,
               punto de venta, pedidos a proveedores, gastos y reportes en un
               solo lugar.
@@ -71,7 +71,7 @@ export default function LandingFooter() {
 
           {COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+              <h2 className="text-sm font-bold text-slate-300">
                 {col.title}
               </h2>
               <ul className="mt-4 space-y-2.5">
@@ -79,7 +79,7 @@ export default function LandingFooter() {
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className="rounded text-sm text-slate-400 transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                      className="rounded text-sm text-slate-500 transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
                     >
                       {l.label}
                     </Link>

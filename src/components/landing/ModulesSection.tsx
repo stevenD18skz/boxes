@@ -10,12 +10,9 @@ export default function ModulesSection() {
       className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 md:px-6 md:py-20"
     >
       <div className="max-w-2xl">
-        <span className="text-sm font-semibold text-indigo-600">
-          Qué trae por dentro
-        </span>
         <h2
           id="modulos-h"
-          className="mt-2 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
+          className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
         >
           Seis secciones, un trabajo concreto cada una
         </h2>
@@ -29,7 +26,7 @@ export default function ModulesSection() {
         {MODULOS.map((modulo) => (
           <article
             key={modulo.titulo}
-            className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg motion-reduce:hover:translate-y-0"
+            className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg motion-reduce:hover:translate-y-0"
           >
             <span
               className={`flex h-11 w-11 items-center justify-center rounded-xl ${modulo.accent}`}

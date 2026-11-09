@@ -48,7 +48,7 @@ export default function AppPreview() {
         <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
         <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
         <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-        <span className="ml-2 hidden rounded-md bg-white px-2.5 py-1 text-[10px] font-medium text-slate-400 ring-1 ring-slate-200 sm:block">
+        <span className="ml-2 hidden rounded-md bg-white px-2.5 py-1 text-[10px] font-medium text-slate-500 ring-1 ring-slate-200 sm:block">
           boxes.app/dashboard
         </span>
       </div>
@@ -85,7 +85,7 @@ export default function AppPreview() {
             <span className="text-[11px] font-bold text-slate-800">
               Resumen de tu tienda
             </span>
-            <span className="text-[9px] text-slate-400">Hoy</span>
+            <span className="text-[9px] text-slate-500">Hoy</span>
           </div>
 
           {/* Indicadores */}
@@ -99,7 +99,7 @@ export default function AppPreview() {
                 key={k.label}
                 className="rounded-lg bg-white p-2 ring-1 ring-slate-100"
               >
-                <div className="text-[8.5px] font-medium text-slate-400">
+                <div className="text-[8.5px] font-medium text-slate-500">
                   {k.label}
                 </div>
                 <div
@@ -135,7 +135,7 @@ export default function AppPreview() {
               {DAYS.map((d, i) => (
                 <span
                   key={i}
-                  className="flex-1 text-center text-[7px] font-medium text-slate-400"
+                  className="flex-1 text-center text-[7px] font-medium text-slate-500"
                 >
                   {d}
                 </span>
@@ -155,7 +155,7 @@ export default function AppPreview() {
                   <div className="truncate text-[9.5px] font-semibold text-slate-700">
                     {r.name}
                   </div>
-                  <div className="text-[8px] text-slate-400">{r.cat}</div>
+                  <div className="text-[8px] text-slate-500">{r.cat}</div>
                 </div>
                 {r.low ? (
                   <span className="shrink-0 rounded-full bg-amber-100 px-1.5 py-0.5 text-[7.5px] font-bold text-amber-800">
@@ -211,7 +211,7 @@ export function AppPreviewMobile() {
             />
             <span className="text-[11px] font-bold text-slate-700">Boxes</span>
           </div>
-          <span className="text-[9px] text-slate-400">Hoy</span>
+          <span className="text-[9px] text-slate-500">Hoy</span>
         </div>
 
         {/* Indicadores */}
@@ -224,7 +224,7 @@ export function AppPreviewMobile() {
               key={k.label}
               className="rounded-lg bg-white p-2 ring-1 ring-slate-100"
             >
-              <div className="text-[8px] font-medium text-slate-400">
+              <div className="text-[8px] font-medium text-slate-500">
                 {k.label}
               </div>
               <div
@@ -287,7 +287,7 @@ export function AppPreviewMobile() {
           <div
             key={i}
             className={`flex h-7 w-7 items-center justify-center rounded-full ${
-              item.active ? "bg-blue-600 text-white" : "text-slate-400"
+              item.active ? "bg-blue-600 text-white" : "text-slate-500"
             }`}
           >
             <item.icon className="h-3.5 w-3.5" />

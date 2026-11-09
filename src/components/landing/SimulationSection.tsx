@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, FlaskConical, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 import { SIMULACION_PUNTOS } from "./landingData";
 
 // El modo simulación es el mejor argumento de venta que tiene la aplicación:
@@ -14,21 +14,17 @@ export default function SimulationSection() {
       <div className="overflow-hidden rounded-3xl border border-teal-200 bg-gradient-to-br from-teal-50 via-white to-blue-50">
         <div className="grid grid-cols-1 gap-8 p-7 md:grid-cols-5 md:p-12">
           <div className="md:col-span-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-teal-300 bg-white px-3 py-1 text-xs font-semibold text-teal-700">
-              <FlaskConical className="h-3.5 w-3.5" aria-hidden />
-              Modo simulación
-            </span>
 
             <h2
               id="simulacion"
-              className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
+              className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
             >
               Pruébala sin miedo a dañar nada
             </h2>
 
             <p className="mt-4 text-lg leading-relaxed text-slate-600">
-              Abre la aplicación completa —las mismas pantallas, los mismos
-              botones— con una tienda inventada ya cargada. Sirve para aprender a
+              Abre la aplicación completa (las mismas pantallas, los mismos
+              botones) con una tienda inventada ya cargada. Sirve para aprender a
               usarla, para mostrarla, o para ensayar algo antes de hacerlo de
               verdad.
             </p>
@@ -47,7 +43,7 @@ export default function SimulationSection() {
 
             <Link
               href="/simulacion"
-              className="group mt-8 inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-teal-600 px-7 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition-all hover:bg-teal-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+              className="group mt-8 inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-teal-600 px-7 text-base font-semibold text-white shadow-brand transition-colors hover:bg-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             >
               Abrir la simulación
               <ArrowRight

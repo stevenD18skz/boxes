@@ -13,12 +13,9 @@ export default function BenefitsSection() {
       className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 md:px-6 md:py-20"
     >
       <div className="max-w-2xl">
-        <span className="text-sm font-semibold text-blue-600">
-          Por qué vale la pena
-        </span>
         <h2
           id="beneficios-h"
-          className="mt-2 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
+          className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
         >
           Menos cuentas a mano, más control
         </h2>

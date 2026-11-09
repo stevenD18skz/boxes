@@ -11,12 +11,9 @@ export default function HowItWorksSection() {
     >
       <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
         <div className="max-w-2xl">
-          <span className="text-sm font-semibold text-teal-600">
-            Cómo se empieza
-          </span>
           <h2
             id="como-funciona"
-            className="mt-2 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
+            className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl"
           >
             Tres pasos y ya está funcionando
           </h2>
