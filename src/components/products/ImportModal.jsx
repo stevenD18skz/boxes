@@ -69,7 +69,7 @@ export default function ImportModal({
                 dragOver ? "border-blue-400 bg-blue-50" : "border-slate-300"
               }`}
             >
-              <UploadCloud className="h-9 w-9 text-slate-400" />
+              <UploadCloud className="h-9 w-9 text-slate-500" />
               <div className="text-[15px] font-bold text-slate-900">
                 Arrastra tu archivo aquí
               </div>

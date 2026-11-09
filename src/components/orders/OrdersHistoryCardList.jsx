@@ -30,7 +30,7 @@ export default function OrdersHistoryCardList({ items }) {
                 <div className="truncate text-[16px] font-bold text-slate-900">
                   {o.supplier}
                 </div>
-                <div className="text-[12.5px] text-slate-400">
+                <div className="text-[12.5px] text-slate-500">
                   {formatDeliveryDate(o.order_date)}
                 </div>
               </div>
@@ -61,12 +61,12 @@ export default function OrdersHistoryCardList({ items }) {
               )}
             </div>
             {breakdown && (
-              <div className="mt-0.5 text-[12.5px] text-slate-400">
+              <div className="mt-0.5 text-[12.5px] text-slate-500">
                 {breakdown}
               </div>
             )}
             {o.notes && (
-              <div className="mt-1 truncate text-[12.5px] text-slate-400">
+              <div className="mt-1 truncate text-[12.5px] text-slate-500">
                 {o.notes}
               </div>
             )}

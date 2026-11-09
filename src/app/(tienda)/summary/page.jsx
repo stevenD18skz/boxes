@@ -6,6 +6,7 @@ import { getDailyCloses } from "@/services/dailyCloses.service";
 import { getSales } from "@/services/sales.service";
 import { currency } from "@/utils/converts";
 import { downloadCSV } from "@/utils/csv";
+import { localDateKey } from "@/utils/dates";
 
 import { Download, Info, Loader2, Printer } from "lucide-react";
 
@@ -135,6 +136,19 @@ export default function ReportsPage() {
     return closes.filter((c) => c.date >= f && c.date <= t);
   }, [closes, from, to]);
 
+  // Las ventas registradas una por una dentro del período: con ellas se arman
+  // el corte por medio de pago y el de productos (los cierres del Excel no
+  // traen ese detalle).
+  const salesInRange = useMemo(() => {
+    const f = iso(from);
+    const t = iso(to);
+    return sales.filter((s) => {
+      if (s.voided) return false;
+      const day = localDateKey(new Date(s.sale_date));
+      return day >= f && day <= t;
+    });
+  }, [sales, from, to]);
+
   const cur = useMemo(() => aggregate(inRange), [inRange]);
   const prev = useMemo(() => aggregate(prevInRange), [prevInRange]);
 
@@ -178,11 +192,6 @@ export default function ReportsPage() {
 
   const buckets = useMemo(() => buildBuckets(inRange), [inRange]);
 
-  const fiadoPendiente = useMemo(
-    () => sales.filter((s) => s.payment_method === "fiado" && !s.voided),
-    [sales],
-  );
-
   const exportCsv = () =>
     downloadCSV(
       `reporte_${iso(from)}_${iso(to)}.csv`,
@@ -218,7 +227,7 @@ export default function ReportsPage() {
             className="flex h-11 items-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
           >
             <Download className="h-[18px] w-[18px]" />
-            Descargar Excel
+            Descargar para Excel
           </button>
           <button
             onClick={() => window.print()}
@@ -270,14 +279,11 @@ export default function ReportsPage() {
         onSelectBar={setSelectedBarKey}
       />
 
-      <ProductPerformance
-        search={productSearch}
-        onSearchChange={setProductSearch}
-      />
+      <ProductPerformance sales={salesInRange} search={productSearch} onSearchChange={setProductSearch} />
 
-      <InsightCards fiadoPendiente={fiadoPendiente} />
+      <InsightCards />
 
-      <PaymentMethods />
+      <PaymentMethods sales={salesInRange} />
     </div>
   );
 }

@@ -32,7 +32,7 @@ import { BARCODE_RE, FIELD_LABELS, LOOKUP_FIELDS } from "./productsUtils";
 const AutoBadge = ({ source }) => (
   <span
     title={`Dato traído de ${source}. Revísalo antes de guardar.`}
-    className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-0.5 align-middle text-[10.5px] font-bold uppercase tracking-wide text-violet-700"
+    className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-0.5 align-middle text-xs font-bold text-violet-700"
   >
     <Sparkles className="h-2.5 w-2.5" aria-hidden />
     Traído
@@ -409,7 +409,7 @@ export default function ProductForm({
                   onClick={() => setLookupMessageVisible(!lookupMessageVisible)}
                   title={lookupMessageVisible ? "Ocultar datos importados" : "Ver datos importados"}
                   aria-label={lookupMessageVisible ? "Ocultar datos importados" : "Ver datos importados"}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold transition-all ${lookupMessageVisible
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${lookupMessageVisible
                     ? "bg-violet-100 text-violet-700 hover:bg-violet-200"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                     }`}
@@ -493,7 +493,7 @@ export default function ProductForm({
 
               {/* <label className="text-sm">
               <span className="font-semibold text-slate-700">SKU</span>
-              <span className="ml-1.5 text-xs font-normal text-slate-400">
+              <span className="ml-1.5 text-xs font-normal text-slate-500">
                 opcional
               </span>
               <input
@@ -771,7 +771,7 @@ export default function ProductForm({
                         }`}
                     >
                       {photoUploading ? (
-                        <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
+                        <Loader2 className="h-5 w-5 animate-spin text-slate-500" />
                       ) : photo ? (
                         <>
                           <img
@@ -784,7 +784,7 @@ export default function ProductForm({
                           </span>
                         </>
                       ) : (
-                        <span className="flex flex-col items-center gap-1 text-slate-400">
+                        <span className="flex flex-col items-center gap-1 text-slate-500">
                           <Camera className="h-5 w-5" />
                           <span className="text-[10px] font-semibold">Tomar foto</span>
                         </span>
@@ -832,7 +832,7 @@ export default function ProductForm({
                         ? "Queda como enlace: se ve mientras haya internet. Sube una propia si prefieres no depender de eso."
                         : "Ayuda a reconocerlo rápido en la lista."}
                     </p>
-                    <p className="mt-0.5 text-[11px] text-slate-400">
+                    <p className="mt-0.5 text-[11px] text-slate-500">
                       {PHOTO_REQUIREMENTS_LABEL}
                     </p>
                     <button
@@ -863,7 +863,7 @@ export default function ProductForm({
 
               <div className="text-sm sm:col-span-2 space-y-1.5">
                 <label htmlFor="form-sku" className="font-semibold text-slate-700">
-                  SKU
+                  Código interno <span className="font-normal text-slate-600">(si usas uno)</span>
                 </label>
                 <input
                   id="form-sku"
@@ -895,8 +895,8 @@ export default function ProductForm({
                       ? "Recalcular a partir de la categoría"
                       : "Elige una categoría primero"
                   }
-                  aria-label="Regenerar SKU"
-                  className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200"
+                  aria-label="Generar otro código interno"
+                  className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-200"
                 >
                   <RefreshCw className="h-3.5 w-3.5" aria-hidden />
                   Regenerar

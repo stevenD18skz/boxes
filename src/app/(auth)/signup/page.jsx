@@ -83,7 +83,7 @@ export default function SignupPage() {
         <AuthField
           id="nombre"
           label="Nombre de la tienda"
-          hint="Es el nombre con el que vas a entrar."
+          hint="Así aparece arriba en la app y en los recibos."
           type="text"
           autoComplete="organization"
           autoFocus
@@ -95,19 +95,19 @@ export default function SignupPage() {
 
         <AuthField
           id="dueno"
-          label="Dueño"
+          label="Tu nombre"
           type="text"
           autoComplete="name"
           required
           value={dueno}
           onChange={(e) => setDueno(e.target.value)}
-          placeholder="Tu nombre"
+          placeholder="Ej. Marta Gómez"
         />
 
         <AuthField
           id="email"
           label="Correo electrónico"
-          hint="Con este vas a iniciar sesión."
+          hint="Con este correo y tu contraseña vas a entrar."
           type="email"
           autoComplete="email"
           required

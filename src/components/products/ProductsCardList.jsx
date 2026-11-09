@@ -51,7 +51,7 @@ export default function ProductsCardList({
                 {p.name}
               </div>
               {p.sku ? (
-                <div className="truncate text-[12.5px] text-slate-400">
+                <div className="truncate text-[12.5px] text-slate-500">
                   SKU {p.sku}
                 </div>
               ) : null}
@@ -72,7 +72,7 @@ export default function ProductsCardList({
 
           <div className="mt-3 grid grid-cols-3 gap-2 rounded-lg bg-slate-50 p-2.5">
             <div>
-              <div className="text-[10.5px] font-bold uppercase tracking-wide text-slate-400">
+              <div className="text-sm font-bold text-slate-600">
                 Costo
               </div>
               <div className="mt-0.5 text-[14px] font-semibold tabular-nums text-slate-700">
@@ -80,7 +80,7 @@ export default function ProductsCardList({
               </div>
             </div>
             <div>
-              <div className="text-[10.5px] font-bold uppercase tracking-wide text-slate-400">
+              <div className="text-sm font-bold text-slate-600">
                 Precio
               </div>
               <div className="mt-0.5 text-[14px] font-bold tabular-nums text-slate-900">
@@ -88,8 +88,8 @@ export default function ProductsCardList({
               </div>
             </div>
             <div>
-              <div className="text-[10.5px] font-bold uppercase tracking-wide text-slate-400">
-                Margen
+              <div className="text-sm font-bold text-slate-600">
+                Le ganas
               </div>
               <div
                 className={`mt-0.5 text-[14px] font-bold tabular-nums ${

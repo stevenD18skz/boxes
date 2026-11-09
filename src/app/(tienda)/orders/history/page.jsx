@@ -62,9 +62,9 @@ export default function OrdersHistoryPage() {
 
       <div className="mt-2 flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-slate-900">
             Historial completo de pedidos
-          </h2>
+          </h1>
           <p className="mt-0.5 text-sm text-slate-500">
             {loading
               ? "Cargando…"
@@ -121,7 +121,7 @@ export default function OrdersHistoryPage() {
       {!loading && orders.length === 0 && (
         <div className="mt-4 flex flex-col items-center gap-3.5 rounded-xl bg-white p-16 text-center shadow-sm ring-1 ring-slate-100">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
-            <ClipboardList className="h-8 w-8 text-slate-400" />
+            <ClipboardList className="h-8 w-8 text-slate-500" />
           </div>
           <p className="text-lg font-bold text-slate-900">
             Todavía no hay pedidos
@@ -141,7 +141,7 @@ export default function OrdersHistoryPage() {
       {!loading && orders.length > 0 && filtered.length === 0 && (
         <div className="mt-4 flex flex-col items-center gap-3.5 rounded-xl bg-white p-16 text-center shadow-sm ring-1 ring-slate-100">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
-            <SearchX className="h-8 w-8 text-slate-400" />
+            <SearchX className="h-8 w-8 text-slate-500" />
           </div>
           <p className="text-lg font-bold text-slate-900">
             No encontramos pedidos

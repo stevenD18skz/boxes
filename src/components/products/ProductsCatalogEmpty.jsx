@@ -67,7 +67,7 @@ export default function ProductsCatalogEmpty({
       </div>
 
       <div className="mx-auto mt-10 max-w-2xl">
-        <h4 className="text-center text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <h4 className="text-center text-sm font-bold text-slate-600">
           Otras formas de empezar
         </h4>
 
@@ -107,7 +107,7 @@ export default function ProductsCatalogEmpty({
 
         {/* Fuera de las tarjetas a propósito: un botón dentro de otro botón no
             es HTML válido y el lector de pantalla lo lee mal. */}
-        <p className="mt-5 text-center text-xs text-slate-400">
+        <p className="mt-5 text-center text-xs text-slate-500">
           ¿Primera vez?{" "}
           <Link
             href="/manual"

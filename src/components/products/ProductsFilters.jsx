@@ -20,7 +20,7 @@ function CheckboxGroup({ legend, options, selected, onChange }) {
 
   return (
     <fieldset>
-      <legend className="text-xs font-medium text-slate-500">{legend}</legend>
+      <legend className="text-sm font-bold text-slate-700">{legend}</legend>
       <div className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-sm sm:grid-cols-3 md:grid-cols-5">
         {options.map((option) => {
           const checked =
@@ -29,14 +29,14 @@ function CheckboxGroup({ legend, options, selected, onChange }) {
           return (
             <label
               key={option}
-              className={`flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 ${checked ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50"}`}
+              className={`flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md px-2 py-1 ${checked ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50"}`}
             >
               <input
                 type="checkbox"
                 checked={checked}
                 onChange={() => toggle(option)}
               />
-              <span className="truncate">{option}</span>
+              <span className="truncate">{option === "All" ? "Todas" : option}</span>
             </label>
           );
         })}
@@ -81,7 +81,7 @@ export default function ProductsFilters({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="text-sm font-semibold">Filtros avanzados</div>
-              <div className="text-xs text-slate-400">
+              <div className="text-xs text-slate-500">
                 Filtra por precio, costo, stock, categorías y marcas
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function ProductsFilters({
                   placeholder="Min"
                   className="w-full rounded-md border border-slate-200 px-2 py-1.5 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                 />
-                <span className="text-slate-400">—</span>
+                <span className="text-slate-500">—</span>
                 <input
                   type="number"
                   min="0"
@@ -125,7 +125,7 @@ export default function ProductsFilters({
                   className="w-full rounded-md border border-slate-200 px-2 py-1.5 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                 />
               </div>
-              <div className="mt-1 text-xs text-slate-400">
+              <div className="mt-1 text-xs text-slate-500">
                 Ej: Min 1000, Max 5000
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function ProductsFilters({
                   placeholder="Min"
                   className="w-full rounded-md border border-slate-200 px-2 py-1.5 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                 />
-                <span className="text-slate-400">—</span>
+                <span className="text-slate-500">—</span>
                 <input
                   type="number"
                   min="0"
@@ -153,7 +153,7 @@ export default function ProductsFilters({
                   className="w-full rounded-md border border-slate-200 px-2 py-1.5 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                 />
               </div>
-              <div className="mt-1 text-xs text-slate-400">
+              <div className="mt-1 text-xs text-slate-500">
                 Ej: Min 500, Max 3000
               </div>
             </div>
@@ -181,7 +181,7 @@ export default function ProductsFilters({
                   className="w-24 rounded-md border border-slate-200 px-2 py-1.5 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 disabled:bg-slate-50 disabled:text-slate-300"
                 />
               </div>
-              <div className="mt-1 text-xs text-slate-400">
+              <div className="mt-1 text-xs text-slate-500">
                 Ej: menor que 10 para ver bajos stocks
               </div>
             </div>

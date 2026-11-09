@@ -7,6 +7,7 @@ import {
   categoryOf,
   getMargin,
 } from "@/components/products/productsUtils";
+import { matchesText } from "@/lib/text";
 
 // Búsqueda, filtros, orden y paginación del catálogo. Vive aparte de la página
 // porque es lógica sin pantalla: recibe la lista de productos y devuelve la
@@ -54,9 +55,7 @@ export function useProductFilters(products, { perPage = 8 } = {}) {
 
     if (q) {
       list = list.filter((p) =>
-        [p.name, p.sku, p.barcode, p.category, p.brand, p.description].some(
-          (f) => (f || "").toLowerCase().includes(q),
-        ),
+        matchesText(q, p.name, p.sku, p.barcode, p.category, p.brand, p.description),
       );
     }
 

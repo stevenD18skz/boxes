@@ -90,7 +90,7 @@ export default function TrendChart({
                   className={`whitespace-nowrap text-[10.5px] tabular-nums ${
                     selected
                       ? "font-bold text-blue-700"
-                      : "font-medium text-slate-400"
+                      : "font-medium text-slate-500"
                   }`}
                 >
                   {formatShort(b[metric])}
@@ -107,7 +107,7 @@ export default function TrendChart({
                 />
                 <div
                   className={`whitespace-nowrap text-[11.5px] font-bold ${
-                    selected || isLast ? "text-blue-700" : "text-slate-400"
+                    selected || isLast ? "text-blue-700" : "text-slate-500"
                   }`}
                 >
                   {b.label}

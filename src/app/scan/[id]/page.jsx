@@ -241,7 +241,7 @@ function PhoneScannerScreen() {
             {pause.reason === "done" ? (
               <Check className="h-7 w-7 text-emerald-400" aria-hidden />
             ) : (
-              <Smartphone className="h-7 w-7 text-slate-400" aria-hidden />
+              <Smartphone className="h-7 w-7 text-slate-500" aria-hidden />
             )}
           </span>
           <p className="text-base font-bold text-white">
@@ -249,7 +249,7 @@ function PhoneScannerScreen() {
               idleSeconds ?? DEFAULT_PHONE_SCANNER_IDLE_SECONDS,
             ).title}
           </p>
-          <p className="max-w-sm text-sm leading-relaxed text-slate-400">
+          <p className="max-w-sm text-sm leading-relaxed text-slate-500">
             {
               PAUSE_COPY[pause.reason](
                 idleSeconds ?? DEFAULT_PHONE_SCANNER_IDLE_SECONDS,

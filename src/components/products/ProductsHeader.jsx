@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
+  ChevronDown,
   Clock,
   Download,
   PlusCircle,
@@ -10,15 +12,14 @@ import {
   Upload,
 } from "lucide-react";
 
-const ACTION_CLASS =
-  "flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60";
-
 const formatUpdatedAt = (date) =>
   date.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
 
-// Título + fila de acciones del catálogo. Exportar e imprimir se apagan cuando
-// no hay nada filtrado en pantalla: trabajan sobre lo que se está viendo, no
-// sobre todo el catálogo.
+// Título + acciones del inventario. Antes eran seis botones iguales; ahora
+// (Ley de Hick) una acción principal, una secundaria que se usa a diario
+// (escanear) y lo de vez en cuando agrupado en "Más opciones".
+// Descargar e imprimir trabajan sobre lo que se está viendo con los filtros,
+// por eso se apagan cuando no hay nada en pantalla.
 export default function ProductsHeader({
   loading,
   canExport,
@@ -30,63 +31,109 @@ export default function ProductsHeader({
   onScan,
   onNew,
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e) => {
+      if (!menuRef.current?.contains(e.target) && !buttonRef.current?.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    menuRef.current?.querySelector("button:not([disabled])")?.focus();
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
+
+  const run = (fn) => () => {
+    setMenuOpen(false);
+    fn?.();
+  };
+
+  const menuItem =
+    "flex min-h-[48px] w-full items-center gap-3 rounded-lg px-3 text-left text-base text-slate-800 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50";
+
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h2 className="mb-1 text-2xl font-bold tracking-tight text-slate-900">
-          Tabla con todos los productos
-        </h2>
-        {/* Solo aparece cuando ya hubo una carga real: nada que decir sobre
-            "última actualización" antes de que exista una. */}
+        <h1 className="text-2xl font-bold text-slate-900">Productos</h1>
+        <p className="mt-1 text-base text-slate-600">Lo que tienes en la tienda y cuánto te queda.</p>
         {lastUpdated && (
-          <p className="flex items-center gap-1.5 text-xs text-slate-400">
-            <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden />
-            Última actualización: {formatUpdatedAt(lastUpdated)}
+          <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-600">
+            <Clock className="h-4 w-4 shrink-0" aria-hidden />
+            Actualizado a las {formatUpdatedAt(lastUpdated)}
           </p>
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
-        <button onClick={onRefresh} disabled={loading} className={ACTION_CLASS}>
-          <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-          Actualizar
-        </button>
-        <button onClick={onImport} className={ACTION_CLASS}>
-          <Upload className="h-4 w-4" />
-          Importar
-        </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative">
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            className="flex h-12 items-center gap-2 rounded-lg px-3 text-base font-bold text-slate-700 transition-colors hover:bg-slate-100"
+          >
+            Más opciones
+            <ChevronDown className={`h-5 w-5 transition-transform ${menuOpen ? "rotate-180" : ""}`} aria-hidden />
+          </button>
+          {menuOpen && (
+            <div
+              ref={menuRef}
+              role="menu"
+              className="absolute right-0 z-30 mt-1 w-72 animate-dropdown-in rounded-xl border border-slate-200 bg-white p-1.5 shadow-pop"
+            >
+              <button role="menuitem" type="button" onClick={run(onImport)} className={menuItem}>
+                <Upload className="h-5 w-5 text-slate-600" aria-hidden />
+                Subir tu lista desde Excel
+              </button>
+              <button role="menuitem" type="button" onClick={run(onExportCSV)} disabled={!canExport} className={menuItem}>
+                <Download className="h-5 w-5 text-slate-600" aria-hidden />
+                Descargar la lista
+              </button>
+              <button role="menuitem" type="button" onClick={run(onExportPDF)} disabled={!canExport} className={menuItem}>
+                <Printer className="h-5 w-5 text-slate-600" aria-hidden />
+                Imprimir la lista
+              </button>
+              <button role="menuitem" type="button" onClick={run(onRefresh)} disabled={loading} className={menuItem}>
+                <RefreshCw className={`h-5 w-5 text-slate-600 ${loading ? "animate-spin" : ""}`} aria-hidden />
+                Volver a cargar
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* El escaneo con el celular vive aparte, como botón flotante (ver
+            PhoneScannerFab): se empareja una vez y queda. */}
         <button
-          onClick={onExportCSV}
-          disabled={!canExport}
-          className={ACTION_CLASS}
-        >
-          <Download className="h-4 w-4" />
-          Exportar
-        </button>
-        <button
-          onClick={onExportPDF}
-          disabled={!canExport}
-          className={ACTION_CLASS}
-        >
-          <Printer className="h-4 w-4" />
-          Imprimir
-        </button>
-        {/* El escaneo con el celular vive aparte, como botón flotante
-            (ver PhoneScannerFab): es un atajo de emparejar-una-vez y no una
-            acción del día a día como esta. */}
-        <button
+          type="button"
           onClick={onScan}
-          className="flex min-w-0 items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="flex h-12 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-base font-bold text-slate-800 transition-colors hover:bg-slate-50"
         >
-          <ScanLine className="h-4 w-4 shrink-0" />
-          <span className="truncate">Escanear código</span>
+          <ScanLine className="h-5 w-5 text-brand-700" aria-hidden />
+          Escanear
         </button>
         <button
+          type="button"
           onClick={onNew}
-          className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          className="flex h-12 items-center gap-2 rounded-lg bg-brand-600 px-5 text-base font-bold text-white shadow-sm transition-colors hover:bg-brand-700"
         >
-          <PlusCircle className="h-4 w-4" />
-          Nuevo producto
+          <PlusCircle className="h-5 w-5" aria-hidden />
+          Agregar producto
         </button>
       </div>
     </div>

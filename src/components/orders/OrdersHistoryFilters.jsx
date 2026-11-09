@@ -75,7 +75,7 @@ export default function OrdersHistoryFilters({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="text-sm font-semibold">Filtros avanzados</div>
-              <div className="text-xs text-slate-400">
+              <div className="text-xs text-slate-500">
                 Filtra por estado, proveedor, fecha y entregas atrasadas
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function OrdersHistoryFilters({
                   onChange={(e) => onDateFromChange(e.target.value)}
                   className="w-full rounded-md border border-slate-200 px-2 py-1.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                 />
-                <span className="text-slate-400">—</span>
+                <span className="text-slate-500">—</span>
                 <input
                   type="date"
                   value={dateTo}
@@ -139,7 +139,7 @@ export default function OrdersHistoryFilters({
               selected={statusFilter}
               onChange={onStatusFilterChange}
               labelFor={(o) =>
-                o === "All" ? "All" : STATUS_STYLE[o]?.label ?? o
+                o === "All" ? "Todos" : STATUS_STYLE[o]?.label ?? o
               }
             />
             <CheckboxGroup

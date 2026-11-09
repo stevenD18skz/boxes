@@ -59,7 +59,7 @@ function ItemStatusControl({ item, onChange }) {
         onClick={() => onChange(item.id, "cancelado")}
         aria-label={`Ya no necesito ${item.product}`}
         title="Ya no lo necesito"
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-400 hover:bg-red-50 hover:text-red-600"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-red-50 hover:text-red-600"
       >
         <Ban className="h-3.5 w-3.5" aria-hidden />
       </button>
@@ -110,7 +110,7 @@ export default function OrderItemsPanel({
               >
                 {item.product}
               </div>
-              <div className="mt-0.5 text-xs text-slate-400">
+              <div className="mt-0.5 text-xs text-slate-500">
                 {item.quantity} × {currency(item.unit_cost)}
               </div>
             </div>

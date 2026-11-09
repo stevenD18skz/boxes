@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { isOverdue } from "@/components/orders/ordersUtils";
+import { matchesText } from "@/lib/text";
 
 // Búsqueda, filtros, orden y paginación del historial completo de pedidos.
 // Mismo patrón que useProductFilters: recibe la lista completa (ya viene
@@ -40,9 +41,7 @@ export function useOrderHistoryFilters(orders, { perPage = 10 } = {}) {
 
     if (q) {
       list = list.filter((o) =>
-        [o.supplier, o.notes, ...o.products.map((p) => p.product)].some((f) =>
-          (f || "").toLowerCase().includes(q),
-        ),
+        matchesText(q, o.supplier, o.notes, ...o.products.map((p) => p.product)),
       );
     }
 

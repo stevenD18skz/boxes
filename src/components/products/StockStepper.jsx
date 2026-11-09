@@ -24,7 +24,7 @@ export default function StockStepper({ value, onCommit }) {
         type="button"
         aria-label="Restar una unidad"
         onClick={() => step(-1)}
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       >
         <Minus className="h-3.5 w-3.5" />
       </button>
@@ -44,7 +44,7 @@ export default function StockStepper({ value, onCommit }) {
         type="button"
         aria-label="Sumar una unidad"
         onClick={() => step(1)}
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       >
         <Plus className="h-3.5 w-3.5" />
       </button>

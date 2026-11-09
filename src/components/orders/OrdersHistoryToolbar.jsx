@@ -19,7 +19,7 @@ export default function OrdersHistoryToolbar({
     <div className="rounded-xl bg-white p-3.5 shadow-sm ring-1 ring-slate-100">
       <div className="flex flex-wrap gap-2.5">
         <div className="relative min-w-[220px] flex-1">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500" />
           <input
             aria-label="Buscar pedidos"
             value={query}
@@ -31,7 +31,7 @@ export default function OrdersHistoryToolbar({
             <button
               onClick={() => onQueryChange("")}
               aria-label="Limpiar búsqueda"
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-600"
             >
               <X className="h-4 w-4" />
             </button>
@@ -65,7 +65,7 @@ export default function OrdersHistoryToolbar({
           >
             <div className="overflow-hidden">
               <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
-                <span className="text-xs font-medium text-slate-400">
+                <span className="text-xs font-medium text-slate-500">
                   Filtros activos:
                 </span>
                 {query.trim() && (

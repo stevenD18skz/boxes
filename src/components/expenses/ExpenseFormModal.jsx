@@ -1,133 +1,122 @@
 "use client";
 
-import { Loader2, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
+
+import Dialog from "@/components/ui/Dialog";
+import MoneyInput from "@/components/ui/MoneyInput";
 import { KIND_META } from "./expensesUtils";
 
+const fieldClass =
+  "h-12 w-full rounded-lg border border-slate-300 px-3 text-base text-slate-900 outline-none placeholder:text-slate-500 focus:border-brand-600 focus:ring-2 focus:ring-brand-100";
+
 // Alta y edición de un movimiento. El mismo formulario sirve para los dos: lo
-// distingue que el borrador traiga id o no.
-export default function ExpenseFormModal({
-  draft,
-  onDraftChange,
-  saving,
-  onClose,
-  onSubmit,
-}) {
+// distingue que el borrador traiga id o no. El monto usa MoneyInput: con un
+// <input type="number">, escribir "5.000" guardaba $5.
+export default function ExpenseFormModal({ draft, onDraftChange, saving, onClose, onSubmit }) {
   const patch = (fields) => onDraftChange({ ...draft, ...fields });
+  const meta = KIND_META[draft.kind] ?? KIND_META.gasto;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-md rounded-lg bg-white shadow-xl"
-      >
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
-          <h2 className="font-semibold text-slate-800">
-            {draft.id ? "Editar registro" : "Nuevo registro"}
-          </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded p-1 text-slate-400 hover:bg-slate-100"
-            aria-label="Cerrar"
-          >
-            <X className="h-4 w-4" />
-          </button>
+    <Dialog
+      title={draft.id ? "Corregir movimiento" : "Anotar un gasto o movimiento"}
+      onClose={saving ? undefined : onClose}
+      dismissable={!saving}
+      className="max-w-md p-5"
+    >
+      <form onSubmit={onSubmit} className="mt-4 space-y-4">
+        <fieldset>
+          <legend className="mb-2 block text-base font-bold text-slate-900">¿Qué fue?</legend>
+          <div className="grid grid-cols-3 gap-2">
+            {Object.entries(KIND_META).map(([k, m]) => (
+              <button
+                key={k}
+                type="button"
+                aria-pressed={draft.kind === k}
+                onClick={() => patch({ kind: k })}
+                className={`min-h-[48px] rounded-lg border px-2 text-sm font-bold transition-colors ${
+                  draft.kind === k
+                    ? "border-brand-600 bg-brand-50 text-brand-800"
+                    : "border-slate-300 text-slate-700 hover:bg-slate-50"
+                }`}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-sm text-slate-600">{meta.hint}</p>
+        </fieldset>
+
+        <div>
+          <label htmlFor="expense-amount" className="mb-1.5 block text-base font-bold text-slate-900">
+            ¿Cuánto?
+          </label>
+          <MoneyInput
+            id="expense-amount"
+            data-autofocus
+            value={draft.amount}
+            onChange={(v) => patch({ amount: v })}
+            className={`${fieldClass} text-lg font-bold tabular-nums`}
+          />
         </div>
 
-        <div className="space-y-4 px-5 py-4">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">
-              Tipo
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {Object.entries(KIND_META).map(([k, meta]) => (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => patch({ kind: k })}
-                  className={`rounded-md border px-2 py-2 text-xs font-medium transition-colors ${
-                    draft.kind === k
-                      ? "border-blue-600 bg-blue-50 text-blue-700"
-                      : "border-slate-200 text-slate-600 hover:bg-slate-50"
-                  }`}
-                >
-                  {meta.label}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div>
+          <label htmlFor="expense-concept" className="mb-1.5 block text-base font-bold text-slate-900">
+            ¿En qué?
+          </label>
+          <input
+            id="expense-concept"
+            value={draft.concept}
+            onChange={(e) => patch({ concept: e.target.value })}
+            placeholder="Arriendo, luz, transporte…"
+            className={fieldClass}
+          />
+        </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Fecha
-              </label>
-              <input
-                type="date"
-                value={draft.date}
-                onChange={(e) => patch({ date: e.target.value })}
-                className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Monto
-              </label>
-              <input
-                type="number"
-                min="0"
-                step="1"
-                value={draft.amount}
-                onChange={(e) => patch({ amount: e.target.value })}
-                placeholder="0"
-                className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm tabular-nums focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-          </div>
-
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">
-              Concepto
+            <label htmlFor="expense-date" className="mb-1.5 block text-sm font-bold text-slate-900">
+              Día
             </label>
             <input
-              value={draft.concept}
-              onChange={(e) => patch({ concept: e.target.value })}
-              placeholder="Arriendo, servicios, transporte…"
-              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              id="expense-date"
+              type="date"
+              value={draft.date}
+              onChange={(e) => patch({ date: e.target.value })}
+              className={fieldClass}
             />
           </div>
-
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">
-              Nota <span className="font-normal text-slate-400">(opcional)</span>
+            <label htmlFor="expense-notes" className="mb-1.5 block text-sm font-bold text-slate-900">
+              Nota <span className="font-normal text-slate-600">(si quieres)</span>
             </label>
-            <textarea
+            <input
+              id="expense-notes"
               value={draft.notes}
               onChange={(e) => patch({ notes: e.target.value })}
-              rows={2}
-              className="w-full resize-none rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              className={fieldClass}
             />
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-slate-200 px-5 py-4">
+        <div className="flex flex-col-reverse gap-2 pt-1 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+            disabled={saving}
+            className="h-12 rounded-lg px-4 text-base font-bold text-slate-700 transition-colors hover:bg-slate-100"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 text-base font-bold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
           >
-            {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-            Guardar
+            {saving && <Loader2 className="h-5 w-5 animate-spin" aria-hidden />}
+            {saving ? "Guardando…" : "Guardar"}
           </button>
         </div>
       </form>
-    </div>
+    </Dialog>
   );
 }

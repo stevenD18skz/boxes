@@ -55,9 +55,9 @@ export default function SettingsPage() {
   return (
     <>
       <header>
-        <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
+        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
           Configuración
-        </h2>
+        </h1>
         <p className="mt-1 text-sm text-slate-500">Ajustes de esta tienda.</p>
       </header>
 
@@ -82,7 +82,7 @@ export default function SettingsPage() {
                     Ahorro de batería
                     {savingKey === "autoDisconnect" && (
                       <Loader2
-                        className="h-3.5 w-3.5 animate-spin text-slate-400"
+                        className="h-3.5 w-3.5 animate-spin text-slate-500"
                         aria-hidden
                       />
                     )}
@@ -119,7 +119,7 @@ export default function SettingsPage() {
                       Tiempo de inactividad
                       {savingKey === "idleSeconds" && (
                         <Loader2
-                          className="h-3.5 w-3.5 animate-spin text-slate-400"
+                          className="h-3.5 w-3.5 animate-spin text-slate-500"
                           aria-hidden
                         />
                       )}
@@ -142,7 +142,7 @@ export default function SettingsPage() {
                     onKeyUp={commitIdleSeconds}
                     className="mt-3 w-full accent-blue-600"
                   />
-                  <div className="mt-1 flex justify-between text-[11px] text-slate-400">
+                  <div className="mt-1 flex justify-between text-[11px] text-slate-500">
                     <span>
                       {formatIdleDuration(PHONE_SCANNER_IDLE_MIN_SECONDS)}
                     </span>

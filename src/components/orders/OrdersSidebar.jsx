@@ -40,7 +40,7 @@ export default function OrdersSidebar({
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-xl bg-white p-[18px] shadow-sm ring-1 ring-slate-100">
-        <div className="mb-3 text-[13px] font-bold uppercase tracking-wide text-slate-500">
+        <div className="mb-3 text-sm font-bold text-slate-600">
           Compras históricas
         </div>
         <div className="flex gap-4">
@@ -48,20 +48,20 @@ export default function OrdersSidebar({
             <div className="text-2xl font-extrabold tabular-nums text-slate-900">
               {currency(historicoTotal)}
             </div>
-            <div className="mt-0.5 text-xs text-slate-400">Costo total</div>
+            <div className="mt-0.5 text-xs text-slate-500">Costo total</div>
           </div>
           <div>
-            <div className="text-2xl font-extrabold tabular-nums text-indigo-600">
+            <div className="text-2xl font-extrabold tabular-nums text-slate-900">
               {historicoCount}
             </div>
-            <div className="mt-0.5 text-xs text-slate-400">Órdenes</div>
+            <div className="mt-0.5 text-xs text-slate-500">Órdenes</div>
           </div>
         </div>
       </div>
 
       <div className="rounded-xl bg-white p-[18px] shadow-sm ring-1 ring-slate-100">
         <div className="mb-3 flex items-center justify-between gap-2">
-          <div className="text-[13px] font-bold uppercase tracking-wide text-slate-500">
+          <div className="text-sm font-bold text-slate-600">
             Historial de pedidos
           </div>
           <Link
@@ -81,7 +81,7 @@ export default function OrdersSidebar({
               </div>
             ))
           ) : orders.length === 0 ? (
-            <p className="py-4 text-center text-sm text-slate-400">
+            <p className="py-4 text-center text-sm text-slate-500">
               Aún no hay pedidos registrados.
             </p>
           ) : (
@@ -124,7 +124,7 @@ export default function OrdersSidebar({
                     </div>
                   </div>
                   {order.expected_delivery && (
-                    <div className="mt-0.5 text-xs text-slate-400">
+                    <div className="mt-0.5 text-xs text-slate-500">
                       Entrega esperada:{" "}
                       {formatDeliveryDate(order.expected_delivery)}
                     </div>
@@ -149,7 +149,7 @@ export default function OrdersSidebar({
                     )}
                   </div>
                   {breakdown && (
-                    <div className="mt-1.5 text-xs text-slate-400">
+                    <div className="mt-1.5 text-xs text-slate-500">
                       {breakdown}
                     </div>
                   )}

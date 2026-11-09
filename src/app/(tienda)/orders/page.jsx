@@ -35,6 +35,7 @@ import {
   buildOrderPrintHTML,
   formatDeliveryDate,
 } from "@/components/orders/ordersUtils";
+import { matchesText } from "@/lib/text";
 
 /*
  OrdersPageEnhanced
@@ -133,7 +134,7 @@ export default function OrdersPageEnhanced() {
         }
       } catch (err) {
         console.error("Error fetching orders/products:", err);
-        push("No se pudo cargar datos. Revisa conexión.", "error");
+        push("No se pudieron cargar tus productos y ventas. Revisa el internet y recarga la página.", "error");
       } finally {
         if (mounted) setLoadingOrders(false);
       }
@@ -158,15 +159,9 @@ export default function OrdersPageEnhanced() {
   }, [focusTarget]);
 
   const suggestions = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return [];
+    if (!searchQuery.trim()) return [];
     return allProducts
-      .filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          (p.sku || "").toLowerCase().includes(q) ||
-          (p.barcode || "").toLowerCase().includes(q),
-      )
+      .filter((p) => matchesText(searchQuery, p.name, p.sku, p.barcode))
       .slice(0, 5);
   }, [searchQuery, allProducts]);
 
@@ -515,9 +510,9 @@ export default function OrdersPageEnhanced() {
         <div className="flex flex-col gap-4 lg:col-span-2">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-bold text-slate-900">
+              <h1 className="text-2xl font-bold text-slate-900">
                 {openOrder ? "Editar pedido" : "Registrar pedido"}
-              </h2>
+              </h1>
               <p className="mt-0.5 text-sm text-slate-500">
                 {openOrder
                   ? `A ${openOrder.supplier} — sigue agregando lo que haga falta`
@@ -548,7 +543,7 @@ export default function OrdersPageEnhanced() {
                         {(STATUS_STYLE[openOrder.status] || STATUS_STYLE.pendiente).label}
                       </span>
                       {openOrder.expected_delivery && (
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-slate-500">
                           Entrega esperada:{" "}
                           {formatDeliveryDate(openOrder.expected_delivery)}
                         </span>
@@ -564,7 +559,7 @@ export default function OrdersPageEnhanced() {
                     <div className="text-[22px] font-extrabold tabular-nums text-slate-900">
                       {currency(openOrder.total_amount)}
                     </div>
-                    <div className="text-xs text-slate-400">Costo total</div>
+                    <div className="text-xs text-slate-500">Costo total</div>
                   </div>
                 </div>
                 <div className="mt-3.5 flex gap-2.5">
@@ -598,7 +593,7 @@ export default function OrdersPageEnhanced() {
               />
 
               {addingItem && (
-                <p className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
                   <Loader2 className="h-3 w-3 animate-spin" aria-hidden />
                   Agregando producto al pedido…
                 </p>

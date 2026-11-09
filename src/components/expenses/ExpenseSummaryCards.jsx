@@ -19,7 +19,7 @@ function SummaryCard({ label, value, icon: Icon, tone, hint }) {
       <p className="mt-2 text-xl font-semibold tabular-nums text-slate-800">
         {currency(value)}
       </p>
-      {hint && <p className="mt-0.5 text-xs text-slate-400">{hint}</p>}
+      {hint && <p className="mt-0.5 text-xs text-slate-500">{hint}</p>}
     </div>
   );
 }

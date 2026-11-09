@@ -46,7 +46,7 @@ export default function ScanEntryPage() {
           <p className="text-base font-bold text-white">
             Este teléfono todavía no está emparejado
           </p>
-          <p className="max-w-sm text-sm leading-relaxed text-slate-400">
+          <p className="max-w-sm text-sm leading-relaxed text-slate-500">
             En el computador, entra a Ventas o a Productos y oprime{" "}
             <span className="font-semibold text-slate-200">
               Escanear con el celular

@@ -41,7 +41,7 @@ export default function OrderTotalPanel({
                 className="h-full w-full object-cover"
               />
             ) : (
-              <span className="flex flex-col items-center gap-1 text-slate-400">
+              <span className="flex flex-col items-center gap-1 text-slate-500">
                 <ImagePlus className="h-5 w-5" />
                 <span className="text-[10px] font-semibold">Factura</span>
               </span>

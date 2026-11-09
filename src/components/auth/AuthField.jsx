@@ -4,7 +4,7 @@ import { forwardRef, useState } from "react";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
 
 const base =
-  "w-full rounded-lg border bg-white px-3.5 text-[15px] text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:ring-4";
+  "w-full rounded-lg border bg-white px-3.5 text-[15px] text-slate-900 outline-none transition-colors placeholder:text-slate-500 focus:ring-4";
 // 48px de alto: por debajo de 44px el dedo falla, y en iOS un input con texto
 // menor a 16px hace que el navegador acerque la página al enfocarlo.
 const size = "min-h-[48px]";
@@ -96,7 +96,7 @@ export const PasswordField = forwardRef(function PasswordField(
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
           aria-pressed={visible}
-          className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <Icon className="h-[18px] w-[18px]" aria-hidden />
         </button>

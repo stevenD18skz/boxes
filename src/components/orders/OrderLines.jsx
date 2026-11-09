@@ -16,7 +16,7 @@ function OrderLinesEmptyState() {
         Aún no agregas productos
       </p>
       <p className="max-w-sm text-sm leading-relaxed text-slate-500">
-        Busca por nombre, SKU o código de barras lo que quieres pedirle a
+        Busca por nombre o código de barras lo que quieres pedirle a
         este proveedor. Cada línea guarda la cantidad y el costo por unidad.
       </p>
     </div>
@@ -47,7 +47,7 @@ export default function OrderLines({
             <div className="text-[15px] font-bold text-slate-900">
               {line.name}
             </div>
-            <div className="mt-0.5 text-xs text-slate-400">
+            <div className="mt-0.5 text-xs text-slate-500">
               SKU {line.sku} · {currency(line.unitCost)} c/u
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function OrderLines({
               type="button"
               aria-label="Restar"
               onClick={() => onQtyStep(line._key, -1)}
-              className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               <Minus className="h-3.5 w-3.5" />
             </button>
@@ -69,13 +69,13 @@ export default function OrderLines({
               onChange={(e) => onQtyChange(line._key, e.target.value)}
               onKeyDown={onQtyKeyDown}
               aria-label={`Cantidad de ${line.name}`}
-              className="no-spinner h-[30px] w-14 rounded-md border border-slate-200 text-center text-sm font-bold tabular-nums text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+              className="no-spinner h-11 w-14 rounded-md border border-slate-200 text-center text-base font-bold tabular-nums text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
             />
             <button
               type="button"
               aria-label="Sumar"
               onClick={() => onQtyStep(line._key, 1)}
-              className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               <Plus className="h-3.5 w-3.5" />
             </button>
@@ -89,7 +89,7 @@ export default function OrderLines({
             type="button"
             aria-label={`Quitar ${line.name}`}
             onClick={() => onRemove(line._key)}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-700 hover:bg-red-100"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-700 hover:bg-red-100"
           >
             <Trash2 className="h-[15px] w-[15px]" />
           </button>

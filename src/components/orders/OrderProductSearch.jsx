@@ -18,14 +18,14 @@ export default function OrderProductSearch({
   return (
     <div className="relative rounded-xl bg-white p-3.5 shadow-sm ring-1 ring-slate-100">
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500" />
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Buscar producto por nombre o SKU..."
+          placeholder="Escribe el producto o escanea el código"
           aria-label="Buscar producto"
           role="combobox"
           aria-expanded={suggestions.length > 0}
@@ -54,7 +54,7 @@ export default function OrderProductSearch({
                     <div className="truncate text-[14.5px] font-bold text-slate-900">
                       {p.name}
                     </div>
-                    <div className="truncate text-xs text-slate-400">
+                    <div className="truncate text-xs text-slate-500">
                       SKU {p.sku} · Stock actual: {p.stock}
                     </div>
                   </div>

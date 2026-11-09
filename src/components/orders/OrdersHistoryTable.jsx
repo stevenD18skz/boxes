@@ -43,10 +43,10 @@ export default function OrdersHistoryTable({ items, sortBy, sortDir, onSort }) {
               onClick={onSort}
               className="w-40"
             />
-            <th className="w-56 px-2 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <th className="w-56 px-2 py-3 text-left text-sm font-bold text-slate-600">
               Productos
             </th>
-            <th className="w-32 px-2 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <th className="w-32 px-2 py-3 text-left text-sm font-bold text-slate-600">
               Estado
             </th>
             <SortHeader
@@ -58,7 +58,7 @@ export default function OrdersHistoryTable({ items, sortBy, sortDir, onSort }) {
               align="right"
               className="w-28"
             />
-            <th className="w-24 py-3 pl-2 pr-4 text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <th className="w-24 py-3 pl-2 pr-4 text-left text-sm font-bold text-slate-600">
               Acciones
             </th>
           </tr>
@@ -82,7 +82,7 @@ export default function OrdersHistoryTable({ items, sortBy, sortDir, onSort }) {
                     {o.supplier}
                   </div>
                   {o.notes && (
-                    <div className="truncate text-[12.5px] text-slate-400">
+                    <div className="truncate text-[12.5px] text-slate-500">
                       {o.notes}
                     </div>
                   )}
@@ -108,7 +108,7 @@ export default function OrdersHistoryTable({ items, sortBy, sortDir, onSort }) {
                     {o.products.length === 1 ? "producto" : "productos"}
                   </div>
                   {breakdown && (
-                    <div className="truncate text-slate-400">{breakdown}</div>
+                    <div className="truncate text-slate-500">{breakdown}</div>
                   )}
                 </td>
                 <td className="px-2 py-2.5">

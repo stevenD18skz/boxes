@@ -49,7 +49,7 @@ export default function ProductsTable({
                 ariaLabel="Seleccionar todos en esta página"
               />
             </th>
-            <th className="w-14 px-2 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <th className="w-14 px-2 py-3 text-left text-sm font-bold text-slate-600">
               Foto
             </th>
             <SortHeader
@@ -75,7 +75,7 @@ export default function ProductsTable({
               onClick={onSort}
               className="w-24"
             />
-            <th className="w-32 px-2 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <th className="w-32 px-2 py-3 text-left text-sm font-bold text-slate-600">
               Código de barras
             </th>
             <SortHeader
@@ -97,7 +97,7 @@ export default function ProductsTable({
               className="w-24"
             />
             <SortHeader
-              label="Margen"
+              label="Le ganas"
               sortKey="margin"
               sortBy={sortBy}
               sortDir={sortDir}
@@ -106,14 +106,14 @@ export default function ProductsTable({
               className="w-28"
             />
             <SortHeader
-              label="Stock"
+              label="Quedan"
               sortKey="stock"
               sortBy={sortBy}
               sortDir={sortDir}
               onClick={onSort}
               className="w-44"
             />
-            <th className="w-52 py-3 pl-2 pr-4 text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            <th className="w-52 py-3 pl-2 pr-4 text-left text-sm font-bold text-slate-600">
               Acciones
             </th>
           </tr>
@@ -148,7 +148,7 @@ export default function ProductsTable({
                 {/* Sin SKU no se deja la línea vacía ni un "SKU —": el nombre
                     sube y la fila se ve igual de completa. */}
                 {p.sku ? (
-                  <div className="text-[12.5px] text-slate-400">
+                  <div className="text-[12.5px] text-slate-500">
                     SKU {p.sku}
                   </div>
                 ) : null}
@@ -185,7 +185,7 @@ export default function ProductsTable({
                   {getMargin(p) >= 0 ? "+" : ""}
                   {currency(getMargin(p))}
                 </div>
-                <div className="text-[11.5px] text-slate-400">
+                <div className="text-[11.5px] text-slate-500">
                   {getMarginPct(p) >= 0 ? "+" : ""}
                   {getMarginPct(p)}%
                 </div>

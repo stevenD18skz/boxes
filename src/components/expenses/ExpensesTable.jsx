@@ -36,7 +36,7 @@ export default function ExpensesTable({
           <p className="mt-3 text-sm font-medium text-slate-600">
             No hay registros con esos filtros
           </p>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500">
             Cambia el periodo o agrega un registro nuevo.
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function ExpensesTable({
         <>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+              <thead className="border-b border-slate-200 bg-slate-50 text-sm text-slate-600">
                 <tr>
                   <th className="px-4 py-3 font-medium">Fecha</th>
                   <th className="px-4 py-3 font-medium">Tipo</th>
@@ -75,7 +75,7 @@ export default function ExpensesTable({
                           {e.concept}
                         </div>
                         {e.notes && (
-                          <div className="mt-0.5 text-xs text-slate-400">
+                          <div className="mt-0.5 text-xs text-slate-500">
                             {e.notes}
                           </div>
                         )}
@@ -88,14 +88,14 @@ export default function ExpensesTable({
                       <td className="whitespace-nowrap px-4 py-3 text-right">
                         <button
                           onClick={() => onEdit(e)}
-                          className="rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-blue-600"
+                          className="rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-blue-600"
                           aria-label={`Editar ${e.concept}`}
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => onDelete(e)}
-                          className="rounded p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-rose-600"
+                          className="rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-rose-600"
                           aria-label={`Eliminar ${e.concept}`}
                         >
                           <Trash2 className="h-4 w-4" />

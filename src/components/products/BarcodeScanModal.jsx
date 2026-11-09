@@ -195,7 +195,7 @@ export default function BarcodeScanModal({
             <div className="mt-1 flex gap-2">
               <div className="relative flex-1">
                 <ScanLine
-                  className={`pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 ${scanning ? "animate-pulse text-blue-600" : "text-slate-400"
+                  className={`pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 ${scanning ? "animate-pulse text-blue-600" : "text-slate-500"
                     }`}
                   aria-hidden
                 />
@@ -250,7 +250,7 @@ export default function BarcodeScanModal({
               />
             )}
 
-              <p className="mt-1.5 text-sm text-slate-400 ">
+              <p className="mt-1.5 text-sm text-slate-500 ">
                 <span className="font-normal text-[17px]">ⓘ</span> Si usas lector, basta con escanear: el Enter lo manda él solo.
               </p>
           </div>
@@ -261,7 +261,7 @@ export default function BarcodeScanModal({
               <p className="text-md font-semibold text-slate-600">
                 Esperando el código
               </p>
-              <p className="max-w-md text-sm text-slate-400">
+              <p className="max-w-md text-sm text-slate-500">
                 Buscamos el nombre, la marca, la presentación y la foto en los
                 catálogos públicos. El precio, el costo y el stock los pones tú.
               </p>
@@ -350,7 +350,7 @@ export default function BarcodeScanModal({
 
           {state.status === "empty" && (
             <div className="flex flex-col items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-7 text-center">
-              <PackageSearch className="h-8 w-8 text-slate-400" aria-hidden />
+              <PackageSearch className="h-8 w-8 text-slate-500" aria-hidden />
               <p className="text-sm font-bold text-slate-800">
                 No está en los catálogos públicos
               </p>

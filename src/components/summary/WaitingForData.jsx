@@ -19,22 +19,23 @@ export default function WaitingForData({
       }`}
     >
       <Hourglass
-        className={`mx-auto text-slate-300 ${compact ? "h-5 w-5" : "h-7 w-7"}`}
+        className={`mx-auto text-slate-400 ${compact ? "h-5 w-5" : "h-7 w-7"}`}
+        aria-hidden
       />
       <div
-        className={`mt-2 font-bold text-slate-700 ${compact ? "text-[13.5px]" : "text-[15px]"}`}
+        className={`mt-2 font-bold text-slate-700 ${compact ? "text-sm" : "text-base"}`}
       >
         {title}
       </div>
       <p
-        className={`mx-auto mt-1 max-w-md text-slate-500 ${compact ? "text-[12.5px]" : "text-[13.5px]"}`}
+        className={`mx-auto mt-1 max-w-md text-slate-600 ${compact ? "text-sm" : "text-base"}`}
       >
         {detail}
       </p>
       {cta && (
         <Link
           href={href}
-          className="mt-3 inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-3.5 text-[13px] font-bold text-slate-700 transition-colors hover:bg-slate-50"
+          className="mt-3 inline-flex h-11 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50"
         >
           {cta}
         </Link>

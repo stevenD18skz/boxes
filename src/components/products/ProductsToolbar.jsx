@@ -20,19 +20,19 @@ export default function ProductsToolbar({
     <div className="mt-4 rounded-xl bg-white p-3.5 shadow-sm ring-1 ring-slate-100">
       <div className="flex flex-wrap gap-2.5">
         <div className="relative min-w-[220px] flex-1">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500" />
           <input
             aria-label="Buscar productos"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="Buscar por nombre, SKU o código de barras"
+            placeholder="Buscar por nombre o código de barras"
             className="h-11 w-full rounded-lg border border-slate-200 pl-10 pr-9 text-[15px] outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
           {query && (
             <button
               onClick={() => onQueryChange("")}
               aria-label="Limpiar búsqueda"
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-600"
             >
               <X className="h-4 w-4" />
             </button>
@@ -66,7 +66,7 @@ export default function ProductsToolbar({
           >
             <div className="overflow-hidden">
               <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
-                <span className="text-xs font-medium text-slate-400">
+                <span className="text-xs font-medium text-slate-500">
                   Filtros activos:
                 </span>
                 {query.trim() && (

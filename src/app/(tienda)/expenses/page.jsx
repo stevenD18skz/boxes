@@ -19,6 +19,7 @@ import ExpenseSummaryCards from "@/components/expenses/ExpenseSummaryCards";
 import ExpenseToasts from "@/components/expenses/ExpenseToasts";
 import ExpensesTable from "@/components/expenses/ExpensesTable";
 import { PAGE_SIZE, emptyDraft } from "@/components/expenses/expensesUtils";
+import { matchesText } from "@/lib/text";
 
 /*
   ExpensesPage
@@ -86,8 +87,7 @@ export default function ExpensesPage() {
         return false;
       if (monthFilter !== "todos" && e.date.slice(5, 7) !== monthFilter)
         return false;
-      if (q && !`${e.concept} ${e.notes}`.toLowerCase().includes(q))
-        return false;
+      if (q && !matchesText(q, e.concept, e.notes)) return false;
       return true;
     });
   }, [items, kindFilter, monthFilter, yearFilter, query]);
@@ -108,6 +108,17 @@ export default function ExpensesPage() {
   useEffect(() => setPage(1), [kindFilter, monthFilter, yearFilter, query]);
 
   const openNew = () => setDraft(emptyDraft());
+
+  // Desde Inicio, "Anotar un gasto" llega con ?nuevo=1 y abre el formulario
+  // de una. Se limpia la dirección para que recargar no lo vuelva a abrir.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("nuevo") === "1") {
+      setDraft(emptyDraft());
+      url.searchParams.delete("nuevo");
+      window.history.replaceState(null, "", url);
+    }
+  }, []);
   const openEdit = (item) => setDraft({ ...item, amount: String(item.amount) });
 
   const saveDraft = async (e) => {

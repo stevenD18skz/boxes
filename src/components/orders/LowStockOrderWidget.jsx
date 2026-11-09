@@ -16,7 +16,7 @@ export default function LowStockOrderWidget({ products, onAdd }) {
 
   return (
     <div className="rounded-xl bg-white p-[18px] shadow-sm ring-1 ring-slate-100">
-      <div className="mb-3 flex items-center gap-1.5 text-[13px] font-bold uppercase tracking-wide text-slate-500">
+      <div className="mb-3 flex items-center gap-1.5 text-sm font-bold text-slate-600">
         <AlertTriangle className="h-3.5 w-3.5 text-amber-500" aria-hidden />
         Top 10 con menos stock
       </div>
@@ -32,7 +32,7 @@ export default function LowStockOrderWidget({ products, onAdd }) {
                 <div className="truncate text-[13.5px] font-semibold text-slate-900">
                   {p.name}
                 </div>
-                <div className="mt-0.5 truncate text-xs text-slate-400">
+                <div className="mt-0.5 truncate text-xs text-slate-500">
                   SKU {p.sku}
                 </div>
               </div>
@@ -50,7 +50,7 @@ export default function LowStockOrderWidget({ products, onAdd }) {
                 onClick={() => onAdd(p)}
                 aria-label={`Agregar ${p.name} al pedido`}
                 title="Agregar al pedido"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 <Plus className="h-4 w-4" aria-hidden />
               </button>
