@@ -20,6 +20,8 @@ export interface DailyClose {
   cash_in: number | null;
   /** Columna SALIDA: dinero que salió de la caja. */
   cash_out: number | null;
+  /** Plata contada en el cajón al cerrar. null = no se contó. */
+  cash_counted?: number | null;
   /** "excel" = importado del archivo de 2025; "app" = cerrado desde la aplicación. */
   source: DailyCloseSource;
 }

@@ -123,6 +123,7 @@ export interface DailyCloseRow {
   purchases_total: number | string;
   cash_in: number | string | null;
   cash_out: number | string | null;
+  cash_counted: number | string | null;
   source: DailyCloseSource;
   created_at: string;
   updated_at: string;

@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
     const purchasesTotal = f.number("purchases_total", { min: 0 });
     const cashIn = f.number("cash_in", { nullable: true, min: 0 });
     const cashOut = f.number("cash_out", { nullable: true, min: 0 });
+    const cashCounted = f.number("cash_counted", { nullable: true, min: 0 });
     const source = f.oneOf("source", SOURCES);
     f.check();
 
@@ -99,6 +100,7 @@ export async function POST(request: NextRequest) {
         // null y 0 no significan lo mismo: null es "ese día no se anotó nada".
         cash_in: cashIn ?? null,
         cash_out: cashOut ?? null,
+        cash_counted: cashCounted ?? null,
         source: source ?? "app",
       })
       .select("*")

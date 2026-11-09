@@ -76,6 +76,7 @@ export async function PATCH(request: NextRequest, context: Context) {
       purchases_total: f.number("purchases_total", { min: 0 }),
       cash_in: f.number("cash_in", { nullable: true, min: 0 }),
       cash_out: f.number("cash_out", { nullable: true, min: 0 }),
+      cash_counted: f.number("cash_counted", { nullable: true, min: 0 }),
       source: f.oneOf("source", SOURCES),
     });
     f.check();

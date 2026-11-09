@@ -18,6 +18,7 @@ import type {
   Supplier,
   Expense,
   DailyClose,
+  FiadoPayment,
 } from "@/types";
 import type {
   ProductRow,
@@ -133,6 +134,7 @@ export function toDailyClose(row: DailyCloseRow): DailyClose {
     purchases_total: n(row.purchases_total),
     cash_in: nOrNull(row.cash_in),
     cash_out: nOrNull(row.cash_out),
+    cash_counted: nOrNull(row.cash_counted),
     source: row.source,
   };
 }
@@ -162,6 +164,24 @@ export function toSupplier(row: OrderSupplierRow): Supplier {
     id: row.supplier_id,
     name: row.supplier,
     order_count: n(row.order_count),
+  };
+}
+
+type FiadoPaymentRow = {
+  id: string;
+  client_name: string;
+  amount: number | string;
+  payment_method: FiadoPayment["payment_method"];
+  paid_at: string;
+};
+
+export function toFiadoPayment(row: FiadoPaymentRow): FiadoPayment {
+  return {
+    id: row.id,
+    client_name: row.client_name,
+    amount: n(row.amount),
+    payment_method: row.payment_method,
+    paid_at: row.paid_at,
   };
 }
 

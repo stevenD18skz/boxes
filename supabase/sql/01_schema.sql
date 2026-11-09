@@ -412,6 +412,10 @@ create table if not exists public.daily_closes (
   purchases_total numeric(14,2) not null default 0 check (purchases_total >= 0),
   cash_in         numeric(14,2),   -- null = ese día no se anotó nada
   cash_out        numeric(14,2),
+  -- Plata que se contó en el cajón al cerrar. null = no se contó (cierres del
+  -- Excel o anotados a mano). La diferencia con lo esperado se calcula en la
+  -- pantalla a partir de las ventas, abonos y gastos del día.
+  cash_counted    numeric(14,2) check (cash_counted is null or cash_counted >= 0),
   source          public.daily_close_source not null default 'app',
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now(),
@@ -423,10 +427,37 @@ create index if not exists daily_closes_tienda_id_idx on public.daily_closes (ti
 create index if not exists daily_closes_date_idx on public.daily_closes (date desc);
 create index if not exists daily_closes_source_idx on public.daily_closes (source);
 
+-- Para bases creadas antes de que existiera la columna.
+alter table public.daily_closes
+  add column if not exists cash_counted numeric(14,2)
+  check (cash_counted is null or cash_counted >= 0);
+
 drop trigger if exists daily_closes_set_updated_at on public.daily_closes;
 create trigger daily_closes_set_updated_at
   before update on public.daily_closes
   for each row execute function public.set_updated_at();
+
+-- ======================================================== ABONOS DE FIADO ==
+-- El cuaderno de fiados: lo que un cliente debe es la suma de sus ventas
+-- fiadas (sales con payment_method = 'fiado' y sin anular) menos lo que ha
+-- abonado aquí. Se permiten abonos parciales ("me dio 10 mil") porque así se
+-- cobra el fiado en una tienda de barrio.
+--
+-- El cliente se identifica por su nombre, igual que en sales.client_name; la
+-- API compara sin mayúsculas, tildes ni espacios de más
+-- (src/lib/fiados.ts). Un abono nunca toca el inventario: la mercancía ya
+-- salió el día que se fió.
+create table if not exists public.fiado_payments (
+  id             uuid primary key default gen_random_uuid(),
+  tienda_id      uuid not null references public.tiendas(id),
+  client_name    text not null check (length(btrim(client_name)) > 0),
+  amount         numeric(14,2) not null check (amount > 0),
+  payment_method public.payment_method not null default 'efectivo'
+                 check (payment_method <> 'fiado'),
+  paid_at        timestamptz not null default now(),
+  created_at     timestamptz not null default now()
+);
+create index if not exists fiado_payments_tienda_idx on public.fiado_payments (tienda_id, paid_at desc);
 
 -- ================================================================= VISTAS ===
 -- security_invoker = true en todas: sin eso una vista se consulta con los
@@ -1114,6 +1145,7 @@ alter table public.order_items   enable row level security;
 alter table public.expenses      enable row level security;
 alter table public.daily_closes  enable row level security;
 alter table public.suppliers     enable row level security;
+alter table public.fiado_payments enable row level security;
 
 -- Además de RLS, anon y authenticated no tienen ningún permiso sobre public:
 -- ni siquiera aparecen las tablas en la API GraphQL de Supabase. Segunda

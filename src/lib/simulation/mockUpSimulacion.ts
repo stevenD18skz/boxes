@@ -13,7 +13,7 @@
 // están escritas a mano: así "hoy" siempre tiene movimiento y las gráficas de
 // los últimos días muestran algo.
 
-import type { Product, Sale, Order, Expense, DailyClose } from "@/types";
+import type { Product, Sale, Order, Expense, DailyClose, FiadoPayment } from "@/types";
 
 export type SimulationData = {
   products: Product[];
@@ -21,6 +21,7 @@ export type SimulationData = {
   orders: Order[];
   expenses: Expense[];
   dailyCloses: DailyClose[];
+  fiadoPayments: FiadoPayment[];
 };
 
 // --- Ayudas de fecha -------------------------------------------------------
@@ -428,5 +429,20 @@ export function buildSimulationData(hoy: Date = new Date()): SimulationData {
     orders: buildOrders(hoy, products),
     expenses: buildExpenses(hoy),
     dailyCloses: buildDailyCloses(hoy),
+    fiadoPayments: buildFiadoPayments(hoy),
   };
+}
+
+// Un abono de ejemplo para que el cuaderno de fiados muestre un saldo que ya
+// bajó. Es a la misma clienta que fió en sim-v-04.
+function buildFiadoPayments(hoy: Date): FiadoPayment[] {
+  return [
+    {
+      id: "sim-a-01",
+      client_name: "Doña Rosa (tienda de la esquina)",
+      amount: 5000,
+      payment_method: "efectivo",
+      paid_at: at(hoy, 0, 18, 10),
+    },
+  ];
 }
