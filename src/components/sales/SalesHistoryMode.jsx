@@ -22,6 +22,7 @@ import {
   Loader2,
   Search,
 } from "lucide-react";
+import { matchesText } from "@/lib/text";
 
 /*
   SalesHistoryMode
@@ -49,7 +50,7 @@ export default function SalesHistoryMode({ sales, loading, onVoid }) {
   const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = query.trim();
     return sales
       .filter((s) => {
         if (s.voided && !showVoided) return false;
@@ -62,12 +63,11 @@ export default function SalesHistoryMode({ sales, loading, onVoid }) {
         if (to && day > to) return false;
 
         if (!q) return true;
-        return (
-          saleFolio(s).toLowerCase().includes(q) ||
-          (s.client_name || "").toLowerCase().includes(q) ||
-          (s.products || []).some((p) =>
-            String(p.product || "").toLowerCase().includes(q),
-          )
+        return matchesText(
+          q,
+          saleFolio(s),
+          s.client_name,
+          ...(s.products || []).map((p) => p.product),
         );
       })
       .sort((a, b) => new Date(b.sale_date) - new Date(a.sale_date));
@@ -109,7 +109,7 @@ export default function SalesHistoryMode({ sales, loading, onVoid }) {
       <div className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
           <div className="relative mr-auto min-w-[210px] flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
               value={query}
@@ -157,7 +157,7 @@ export default function SalesHistoryMode({ sales, loading, onVoid }) {
             />
             Ver anuladas
             {totals.anuladas > 0 && (
-              <span className="tabular-nums text-slate-400">
+              <span className="tabular-nums text-slate-500">
                 ({totals.anuladas})
               </span>
             )}
@@ -182,7 +182,7 @@ export default function SalesHistoryMode({ sales, loading, onVoid }) {
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-slate-100 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                <thead className="border-b border-slate-100 bg-slate-50 text-sm text-slate-600">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Folio</th>
                     <th className="px-4 py-2.5 font-medium">Fecha</th>
@@ -254,7 +254,7 @@ function SaleRows({ sale, open, onToggle, onVoid }) {
         </td>
         <td className="whitespace-nowrap px-4 py-2.5 text-slate-700">
           {formatSaleDate(sale.sale_date)}
-          <span className="ml-1.5 text-xs text-slate-400">
+          <span className="ml-1.5 text-xs text-slate-500">
             {formatSaleTime(sale.sale_date)}
           </span>
         </td>
@@ -297,7 +297,7 @@ function SaleRows({ sale, open, onToggle, onVoid }) {
               onClick={onToggle}
               aria-expanded={open}
               aria-label={`${open ? "Ocultar" : "Ver"} detalle de la venta ${saleFolio(sale)}`}
-              className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="rounded p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-600"
             >
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
@@ -316,7 +316,7 @@ function SaleRows({ sale, open, onToggle, onVoid }) {
               </p>
             ) : (
               <table className="w-full text-left text-[13px]">
-                <thead className="text-xs uppercase tracking-wide text-slate-400">
+                <thead className="text-sm text-slate-600">
                   <tr>
                     <th className="py-1 font-medium">Producto</th>
                     <th className="py-1 text-right font-medium">Cant.</th>
@@ -350,7 +350,7 @@ function SaleRows({ sale, open, onToggle, onVoid }) {
                         <td className="py-1 text-right tabular-nums text-slate-800">
                           {currency(saleLineTotal(line))}
                           {conDescuento && (
-                            <span className="ml-1.5 text-xs text-slate-400 line-through">
+                            <span className="ml-1.5 text-xs text-slate-500 line-through">
                               {currency(saleLineBase(line))}
                             </span>
                           )}

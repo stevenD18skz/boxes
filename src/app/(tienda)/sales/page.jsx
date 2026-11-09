@@ -3,9 +3,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { useIsClient } from "@/hooks/useIsClient";
-import { getProducts, updateProduct } from "@/services/products.service";
+import { getProducts } from "@/services/products.service";
+import { matchesText } from "@/lib/text";
+import { useFiados } from "@/hooks/useFiados";
 import {
   getSales,
   createSaleWithDetails,
@@ -38,6 +40,7 @@ import {
   lineSubtotal,
   uid,
 } from "@/components/sales/salesUtils";
+import { currency } from "@/utils/converts";
 
 /*
   SalePageEnhanced
@@ -77,11 +80,26 @@ const swrOptions = {
   shouldRetryOnError: false,
 };
 
+const SALE_DRAFT_KEY = "boxes-venta-en-curso";
+
 export default function SalePageEnhanced() {
   // modo de captura: "transaccion" registra venta por venta con carrito;
   // "cierre" anota un único total al final del día, como se llevaba en el
   // Excel; "historial" sólo consulta lo ya registrado.
-  const [mode, setMode] = useState("transaccion");
+  const [mode, setModeState] = useState("transaccion");
+  // El modo vive también en la dirección (?modo=cierre): así Inicio puede
+  // abrir directo el cierre del día y recargar no te devuelve al carrito.
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get("modo");
+    if (fromUrl === "cierre" || fromUrl === "historial") setModeState(fromUrl);
+  }, []);
+  const setMode = (next) => {
+    setModeState(next);
+    const url = new URL(window.location.href);
+    if (next === "transaccion") url.searchParams.delete("modo");
+    else url.searchParams.set("modo", next);
+    window.history.replaceState(null, "", url);
+  };
 
   // data
   // keys en null hasta montar: mismo motivo que en useDashboardData, para no
@@ -99,6 +117,8 @@ export default function SalePageEnhanced() {
     mutate: mutateSales,
   } = useSWR(isClient ? "sales" : null, getSales, swrOptions);
   const loadingSales = !isClient || salesLoading;
+  // Los clientes que ya tienen fiado, para sugerirlos al fiar otra vez.
+  const { clients: fiadoClients } = useFiados();
 
   // búsqueda + carrito
   const [searchQuery, setSearchQuery] = useState("");
@@ -149,7 +169,7 @@ export default function SalePageEnhanced() {
   useEffect(() => {
     if (!productsError && !salesError) return;
     console.error("Error fetching sales/products:", productsError || salesError);
-    push("No se pudo cargar datos. Revisa conexión.", "error");
+    push("No se pudieron cargar tus productos y ventas. Revisa el internet y recarga la página.", "error");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productsError, salesError]);
 
@@ -166,15 +186,10 @@ export default function SalePageEnhanced() {
   }, [focusTarget]);
 
   const suggestions = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return [];
+    if (!searchQuery.trim()) return [];
+    // Sin tildes ni mayúsculas: "cafe" encuentra "Café".
     return allProducts
-      .filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          (p.sku || "").toLowerCase().includes(q) ||
-          (p.barcode || "").toLowerCase().includes(q),
-      )
+      .filter((p) => matchesText(searchQuery, p.name, p.sku, p.barcode))
       .slice(0, 5);
   }, [searchQuery, allProducts]);
 
@@ -205,10 +220,10 @@ export default function SalePageEnhanced() {
     product,
     { focusQty = true, focus = true } = {},
   ) => {
-    if (!product.stock || product.stock <= 0) {
-      push("Sin stock disponible para agregar", "error");
-      return false;
-    }
+    // El inventario de una tienda nunca cuadra exacto: si el cliente tiene el
+    // producto en la mano, se vende aunque el sistema diga que no hay. Solo se
+    // avisa, una vez, para que se revise el inventario después.
+    const stockNow = Number(product.stock ?? 0);
     let added = true;
     setLines((prev) => {
       const existingIdx = prev.findIndex(
@@ -216,10 +231,12 @@ export default function SalePageEnhanced() {
       );
       if (existingIdx >= 0) {
         const existing = prev[existingIdx];
-        const nextQty = Math.min(existing.quantity + 1, product.stock);
-        if (nextQty === existing.quantity) {
-          push("Sin más stock disponible", "info");
-          added = false;
+        const nextQty = existing.quantity + 1;
+        if (nextQty === Math.max(0, stockNow) + 1) {
+          push(
+            `Según el inventario solo había ${Math.max(0, stockNow)}. Se vende igual: revisa el inventario de ${product.name} después.`,
+            "info",
+          );
         }
         const next = prev.slice();
         next[existingIdx] = { ...existing, quantity: nextQty };
@@ -231,6 +248,12 @@ export default function SalePageEnhanced() {
         return next;
       }
       const key = uid();
+      if (stockNow <= 0) {
+        push(
+          `El inventario dice que no hay ${product.name}. Se vende igual: revísalo después.`,
+          "info",
+        );
+      }
       if (focus)
         setFocusTarget(focusQty ? { type: "qty", key } : { type: "search" });
       flashLine(key);
@@ -263,9 +286,14 @@ export default function SalePageEnhanced() {
   // código de barras y avisa siempre el resultado, porque quien escanea suele
   // estar mirando la mercancía, no la pantalla.
   const handleBarcodeScan = (code, { fromCamera = false } = {}) => {
-    const match = allProducts.find(
-      (p) => (p.barcode || "").trim() === code.trim(),
-    );
+    // Ley de Postel: el mismo producto puede llegar como EAN-13 (con un 0
+    // adelante) o como UPC-A (sin él), según el lector. Se comparan solo los
+    // dígitos y sin ceros a la izquierda.
+    const digits = (v) => String(v || "").replace(/\D/g, "").replace(/^0+/, "");
+    const wanted = digits(code);
+    const match = wanted
+      ? allProducts.find((p) => digits(p.barcode) === wanted)
+      : null;
     if (!match) {
       push(`Ningún producto tiene el código ${code}`, "error");
       return;
@@ -343,7 +371,7 @@ export default function SalePageEnhanced() {
         if (l._key !== key) return l;
         let v = parseInt(raw, 10);
         if (Number.isNaN(v)) v = 1;
-        v = Math.max(1, Math.min(v, l.stock || v));
+        v = Math.max(1, v);
         return { ...l, quantity: v };
       }),
     );
@@ -352,10 +380,7 @@ export default function SalePageEnhanced() {
     setLines((prev) =>
       prev.map((l) => {
         if (l._key !== key) return l;
-        const next = Math.max(
-          1,
-          Math.min(l.quantity + delta, l.stock || l.quantity + delta),
-        );
+        const next = Math.max(1, l.quantity + delta);
         return { ...l, quantity: next };
       }),
     );
@@ -418,8 +443,6 @@ export default function SalePageEnhanced() {
     if (saleErrors.cliente)
       setSaleErrors((er) => ({ ...er, cliente: undefined }));
   };
-  const addQuickCash = (amount) =>
-    setReceivedAmount((r) => String((parseFloat(r) || 0) + amount));
   const setExactAmount = () =>
     setReceivedAmount(String(Math.ceil(totals.total)));
 
@@ -432,10 +455,62 @@ export default function SalePageEnhanced() {
     setSaleErrors({});
   };
 
+  // Cancelar no pregunta "¿seguro?": deja deshacer. Es más rápido para quien
+  // canceló a propósito y salva a quien lo tocó sin querer.
   const cancelSale = () => {
+    const snapshot = { lines, paymentMethod, receivedAmount, clientName };
     resetSaleDraft();
-    push("Venta cancelada", "info");
+    push("Venta cancelada", "info", {
+      label: "Deshacer",
+      onClick: () => {
+        setLines(snapshot.lines);
+        setPaymentMethod(snapshot.paymentMethod);
+        setReceivedAmount(snapshot.receivedAmount);
+        setClientName(snapshot.clientName);
+      },
+    });
   };
+
+  // La venta a medias sobrevive a ir a otra pantalla o recargar: en la tienda
+  // interrumpen a cada rato ("¿cuánto vale el arroz?") y perder 8 productos
+  // ya escaneados es lo peor que puede pasar. Vive en sessionStorage, que es
+  // de esta pestaña: al cerrarla se va.
+  const draftRestored = useRef(false);
+  useEffect(() => {
+    if (draftRestored.current) return;
+    draftRestored.current = true;
+    try {
+      const saved = JSON.parse(window.sessionStorage.getItem(SALE_DRAFT_KEY) || "null");
+      if (saved?.lines?.length) {
+        setLines(saved.lines);
+        setPaymentMethod(saved.paymentMethod || "efectivo");
+        setReceivedAmount(saved.receivedAmount || "");
+        setClientName(saved.clientName || "");
+        push(
+          `Seguimos con la venta que dejaste a medias (${saved.lines.length} ${saved.lines.length === 1 ? "producto" : "productos"})`,
+          "info",
+        );
+      }
+    } catch {
+      // Sin almacenamiento disponible: se empieza en blanco, como siempre.
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (!draftRestored.current) return;
+    try {
+      if (lines.length) {
+        window.sessionStorage.setItem(
+          SALE_DRAFT_KEY,
+          JSON.stringify({ lines, paymentMethod, receivedAmount, clientName }),
+        );
+      } else {
+        window.sessionStorage.removeItem(SALE_DRAFT_KEY);
+      }
+    } catch {
+      // Lleno o bloqueado: la venta sigue en pantalla, solo no aguanta recargar.
+    }
+  }, [lines, paymentMethod, receivedAmount, clientName]);
 
   const confirmSale = async () => {
     if (confirming) return;
@@ -444,23 +519,23 @@ export default function SalePageEnhanced() {
       return;
     }
     const errors = {};
-    if (paymentMethod === "efectivo") {
+    // Vacío es "pagó exacto" (Ley de Tesler: el sistema asume lo obvio en vez
+    // de obligar a escribirlo). Solo es error si lo que se escribió no alcanza.
+    if (paymentMethod === "efectivo" && receivedAmount !== "") {
       const recibido = parseFloat(receivedAmount);
-      if (
-        receivedAmount === "" ||
-        Number.isNaN(recibido) ||
-        recibido < totals.total
-      )
-        errors.monto = "El monto recibido debe cubrir el total";
+      if (Number.isNaN(recibido) || recibido < totals.total)
+        errors.monto = `Con eso no alcanza: faltan ${currency(totals.total - (recibido || 0))}`;
     }
     if (paymentMethod === "fiado" && !clientName.trim())
-      errors.cliente = "Escribe el nombre del cliente";
+      errors.cliente = "Escribe a quién le fías, para saber a quién cobrarle";
     setSaleErrors(errors);
     if (Object.keys(errors).length > 0) return;
 
     const total = totals.total;
     const recibido =
-      paymentMethod === "efectivo" ? Number(receivedAmount) || 0 : total;
+      paymentMethod === "efectivo" && receivedAmount !== ""
+        ? Number(receivedAmount)
+        : total;
     const salePayload = {
       total_amount: Number(total),
       sale_date: new Date().toISOString(),
@@ -484,24 +559,19 @@ export default function SalePageEnhanced() {
 
     setConfirming(true);
     try {
+      // La venta y el descuento del inventario van juntos en una sola
+      // operación (create_sale en la base, o el servicio en simulación): o
+      // queda todo o no queda nada.
       await createSaleWithDetails(salePayload, productsFormat);
-
-      await Promise.all(
-        lines.map((l) => {
-          const current = allProducts.find(
-            (p) => String(p.id) === String(l.productId),
-          );
-          const newStock = Math.max(0, (current?.stock ?? l.stock) - l.quantity);
-          return updateProduct(l.productId, { stock: newStock }).catch((err) =>
-            console.error("No se pudo sincronizar el stock:", err),
-          );
-        }),
-      );
 
       // mutate() sin argumentos revalida contra la API y deja el resultado en
       // la caché compartida: Inicio y Productos ven el stock y la venta
       // nuevos sin tener que volver a pedirlos ellos mismos.
-      await Promise.all([mutateSales(), mutateProducts()]);
+      await Promise.all([
+        mutateSales(),
+        mutateProducts(),
+        paymentMethod === "fiado" ? mutate("fiados") : null,
+      ]);
 
       setReceiptData({
         total,
@@ -540,23 +610,18 @@ export default function SalePageEnhanced() {
     }
     setVoiding(true);
     try {
+      // Anular y devolver el inventario es una sola operación (void_sale en la
+      // base, o el servicio en simulación).
       await updateSale(sale.id, { voided: true });
-      await Promise.all(
-        sale.products.map((p) => {
-          const current = allProducts.find(
-            (ap) => String(ap.id) === String(p.product_id),
-          );
-          if (!current) return Promise.resolve();
-          return updateProduct(p.product_id, {
-            stock: current.stock + p.quantity,
-          }).catch((err) => console.error(err));
-        }),
-      );
-      await Promise.all([mutateSales(), mutateProducts()]);
-      push("Venta anulada", "info");
+      await Promise.all([
+        mutateSales(),
+        mutateProducts(),
+        sale.payment_method === "fiado" ? mutate("fiados") : null,
+      ]);
+      push("Venta anulada. Los productos volvieron al inventario.", "info");
     } catch (err) {
       console.error(err);
-      push("Error anulando la venta", "error");
+      push("No se pudo anular la venta. Revisa la conexión e intenta otra vez.", "error");
     } finally {
       setVoiding(false);
       setVoidConfirmId(null);
@@ -579,6 +644,7 @@ export default function SalePageEnhanced() {
 
   return (
     <>
+      <h1 className="sr-only">Ventas</h1>
       <ModeSwitcher mode={mode} onChange={setMode} />
 
       {mode === "cierre" ? (
@@ -629,10 +695,10 @@ export default function SalePageEnhanced() {
                 onPaymentMethodChange={setPayment}
                 receivedAmount={receivedAmount}
                 onReceivedAmountChange={changeReceivedAmount}
-                onQuickCash={addQuickCash}
                 onExactAmount={setExactAmount}
                 clientName={clientName}
                 onClientNameChange={changeClientName}
+                knownClients={fiadoClients}
                 errors={saleErrors}
                 confirming={confirming}
                 onCancel={cancelSale}

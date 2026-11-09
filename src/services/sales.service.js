@@ -67,6 +67,9 @@ export const createSaleWithDetails = async (sale, saleProducts) => {
 
     all().unshift(created);
     commit("sales");
+    // Igual que create_sale() en la base: descuenta el inventario en la misma
+    // operación, y puede quedar en negativo si se vendió más de lo anotado.
+    adjustSimulatedStock(created.products, -1);
     return created;
   }
 
@@ -77,12 +80,24 @@ export const createSaleWithDetails = async (sale, saleProducts) => {
   return data;
 };
 
+function adjustSimulatedStock(lines, sign) {
+  const products = collection("products");
+  for (const line of lines ?? []) {
+    const product = products.find((p) => sameId(p.id, line.product_id));
+    if (product) product.stock = Number(product.stock ?? 0) + sign * Number(line.quantity ?? 0);
+  }
+  commit("products");
+}
+
 export const updateSale = async (id, changes) => {
   if (isSimulationOn()) {
     const sale = all().find((s) => sameId(s.id, id));
     if (!sale) throw new Error("Sale not found");
+    // Igual que void_sale() en la base: anular devuelve lo vendido al inventario.
+    const voiding = changes.voided === true && !sale.voided;
     Object.assign(sale, changes);
     commit("sales");
+    if (voiding && changes.restore_stock !== false) adjustSimulatedStock(sale.products, +1);
     return sale;
   }
   const { data } = await apiFetch(`/api/sales/${id}`, {

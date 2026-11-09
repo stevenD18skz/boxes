@@ -82,7 +82,7 @@ export function CartEmptyState({
                 Buscar a mano
               </span>
               <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                Por nombre, SKU o código de barras.
+                Por el nombre o pasando el código de barras.
               </span>
             </span>
           </div>
@@ -217,13 +217,13 @@ function CartLine({
             <div className="truncate text-[18px] font-bold text-slate-900">
               {line.name}
             </div>
-            <div className="mt-0.5 text-xs text-slate-400">SKU {line.sku}</div>
+            <div className="mt-0.5 text-xs text-slate-500">SKU {line.sku}</div>
           </div>
         </div>
 
         {/* Valor unitario: el subtotal de la derecha ya viene multiplicado, así
             que sin esto no hay forma de ver a cómo se está cobrando cada uno. */}
-        <div className="shrink-0 whitespace-nowrap text-xs text-slate-400">
+        <div className="shrink-0 whitespace-nowrap text-xs text-slate-500">
           V.U:{" "}
           <span className="text-[13px] font-semibold tabular-nums text-slate-600">
             {formatMoney(line.unitPrice) || "0"}
@@ -235,7 +235,7 @@ function CartLine({
             type="button"
             aria-label="Restar"
             onClick={() => onQtyStep(line._key, -1)}
-            className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
           >
             <Minus className="h-3.5 w-3.5" />
           </button>
@@ -247,13 +247,13 @@ function CartLine({
             onChange={(e) => onQtyChange(line._key, e.target.value)}
             onKeyDown={onQtyKeyDown}
             aria-label={`Cantidad de ${line.name}`}
-            className="no-spinner h-[30px] w-12 rounded-md border border-slate-200 text-center text-sm font-bold tabular-nums text-slate-900 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+            className="no-spinner h-11 w-14 rounded-md border border-slate-200 text-center text-base font-bold tabular-nums text-slate-900 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
           />
           <button
             type="button"
             aria-label="Sumar"
             onClick={() => onQtyStep(line._key, 1)}
-            className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
           >
             <Plus className="h-3.5 w-3.5" />
           </button>
@@ -264,7 +264,7 @@ function CartLine({
             {currency(lineSubtotal(line))}
           </div>
           {hasDiscount && (
-            <div className="text-xs tabular-nums text-slate-400 line-through">
+            <div className="text-xs tabular-nums text-slate-500 line-through">
               {currency(lineBase(line))}
             </div>
           )}
@@ -274,7 +274,7 @@ function CartLine({
           type="button"
           aria-label={`Quitar ${line.name}`}
           onClick={() => onRemove(line._key)}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-700 hover:bg-red-100"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-700 hover:bg-red-100"
         >
           <Trash2 className="h-[15px] w-[15px]" />
         </button>

@@ -36,7 +36,7 @@ export default function RecentSales({ sales, loading, onVoid, onSeeAll }) {
   return (
     <div className="rounded-xl bg-white p-[18px] shadow-sm ring-1 ring-slate-100">
       <div className="mb-3 flex items-baseline justify-between gap-2">
-        <div className="text-[13px] font-bold uppercase tracking-wide text-slate-500">
+        <div className="text-sm font-bold text-slate-600">
           Historial reciente
         </div>
         {onSeeAll && (
@@ -59,7 +59,7 @@ export default function RecentSales({ sales, loading, onVoid, onSeeAll }) {
             </div>
           ))
         ) : sales.length === 0 ? (
-          <p className="py-4 text-center text-sm text-slate-400">
+          <p className="py-4 text-center text-sm text-slate-500">
             Aún no hay ventas registradas.
           </p>
         ) : (
@@ -106,7 +106,7 @@ function SaleReceipt({ sale, open, onToggle, onVoid }) {
             >
               {currency(sale.total_amount)}
             </div>
-            <div className="shrink-0 whitespace-nowrap text-xs text-slate-400">
+            <div className="shrink-0 whitespace-nowrap text-xs text-slate-500">
               {formatSaleTime(sale.sale_date)}
             </div>
           </div>
@@ -128,7 +128,7 @@ function SaleReceipt({ sale, open, onToggle, onVoid }) {
               </span>
             )}
 
-            <span className="ml-auto whitespace-nowrap font-mono text-[11px] text-slate-400">
+            <span className="ml-auto whitespace-nowrap font-mono text-[11px] text-slate-500">
               {saleFolio(sale)}
             </span>
           </div>
@@ -152,7 +152,7 @@ function SaleReceipt({ sale, open, onToggle, onVoid }) {
             <div className="mt-1.5 flex items-baseline justify-between gap-2 border-t border-dashed border-slate-300 pt-1.5 text-[12.5px] font-bold text-slate-900">
               <span>
                 Total
-                <span className="ml-1.5 font-normal text-slate-400">
+                <span className="ml-1.5 font-normal text-slate-500">
                   {unidades} {unidades === 1 ? "unidad" : "unidades"}
                 </span>
               </span>
@@ -192,7 +192,7 @@ function DetailLine({ line }) {
           {currency(saleLineTotal(line))}
         </span>
       </div>
-      <div className="text-[11px] text-slate-400">
+      <div className="text-[11px] text-slate-500">
         V.U: <span className="tabular-nums">{money(line.sale_price)}</span>
         {" · "}
         <span className="tabular-nums">×{line.quantity}</span>
